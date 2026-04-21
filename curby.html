@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Curby — Free Stuff Near You</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',Helvetica,sans-serif;background:#e8eaf0;}
+
+/* ── PHONE SHELL (desktop preview) ── */
+.phone-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.phone{width:390px;height:844px;border-radius:50px;overflow:hidden;position:relative;background:#f4f5fb;
+  box-shadow:0 0 0 2px rgba(91,108,222,0.2),0 30px 80px rgba(0,0,0,0.25);flex-shrink:0;}
+@media(max-width:430px){
+  .phone-wrap{padding:0;align-items:flex-start;}
+  .phone{width:100vw;height:100vh;border-radius:0;box-shadow:none;}
+}
+
+/* ── SCREENS ── */
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
+.screen.active{display:flex;}
+
+/* ── BOTTOM NAV ── */
+.bnav{position:absolute;bottom:0;left:0;right:0;z-index:200;background:#fff;
+  border-top:1px solid #eaecf5;display:flex;padding:10px 0 30px;}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;border:none;background:none;padding:4px 0;transition:opacity .15s;}
+.ni:active{opacity:.6;}
+.nl{font-size:10px;font-weight:600;color:#c0c4df;letter-spacing:.3px;text-transform:uppercase;}
+.ni.on .nl{color:#5b6cde;}
+
+/* ══════════════════════════════════
+   MAP SCREEN
+══════════════════════════════════ */
+#sMap{background:#e9ecf7;}
+
+#leafletMap{position:absolute;inset:0;z-index:1;}
+
+.map-topbar{position:absolute;top:0;left:0;right:0;z-index:400;
+  padding:54px 16px 12px;
+  background:linear-gradient(to bottom,rgba(255,255,255,1) 65%,rgba(255,255,255,0));}
+.logo{font-size:26px;font-weight:900;color:#1a1d3a;letter-spacing:-1px;margin-bottom:10px;}
+.logo em{color:#5b6cde;font-style:normal;}
+.map-search{background:#f4f5ff;border-radius:16px;padding:12px 15px;
+  display:flex;align-items:center;gap:9px;margin-bottom:10px;cursor:text;}
+.map-search span{font-size:13px;color:#9095b0;flex:1;}
+.filter-row{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;}
+.filter-row::-webkit-scrollbar{display:none;}
+.fchip{padding:7px 14px;border-radius:50px;font-size:12px;font-weight:600;
+  white-space:nowrap;cursor:pointer;border:1.5px solid #e8eaf5;
+  background:#fff;color:#6e74a0;transition:all .18s;flex-shrink:0;}
+.fchip.on{background:#5b6cde;border-color:#5b6cde;color:#fff;}
+
+.map-ctrl{position:absolute;right:14px;top:55%;transform:translateY(-50%);
+  z-index:400;display:flex;flex-direction:column;gap:8px;}
+.map-btn{width:42px;height:42px;background:#fff;border-radius:13px;
+  border:1px solid #eaecf5;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:22px;font-weight:300;color:#3d4480;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);transition:background .15s;}
+.map-btn:hover{background:#f4f5ff;}
+.map-btn:active{background:#eaecff;}
+
+.count-pill{position:absolute;left:16px;bottom:112px;z-index:400;background:#5b6cde;
+  color:#fff;border-radius:20px;padding:9px 15px;font-size:12px;font-weight:600;
+  display:flex;align-items:center;gap:7px;box-shadow:0 3px 10px rgba(91,108,222,0.35);}
+.cpulse{width:7px;height:7px;background:rgba(255,255,255,.7);border-radius:50%;
+  animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:.7;transform:scale(1);}50%{opacity:1;transform:scale(1.3);}}
+
+.post-fab{position:absolute;right:16px;bottom:112px;z-index:400;width:54px;height:54px;
+  background:#5b6cde;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(91,108,222,0.45);transition:transform .15s;}
+.post-fab:active{transform:scale(.92);}
+
+/* Listing card sheet */
+.card-sheet{position:absolute;bottom:0;left:0;right:0;z-index:500;
+  transition:transform .32s cubic-bezier(.4,0,.2,1);transform:translateY(110%);}
+.card-sheet.open{transform:translateY(0);}
+.card-inner{background:#fff;border-radius:28px 28px 0 0;
+  box-shadow:0 -4px 30px rgba(0,0,0,0.12);}
+.drag-bar{width:36px;height:4px;background:#e4e6f5;border-radius:4px;margin:13px auto 0;}
+.card-img-box{height:185px;margin:14px 16px 0;border-radius:22px;overflow:hidden;
+  position:relative;display:flex;align-items:center;justify-content:center;}
+.avail-tag{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.96);
+  border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:#3cb87a;
+  display:flex;align-items:center;gap:5px;}
+.avail-dot{width:6px;height:6px;background:#3cb87a;border-radius:50%;}
+.time-tag{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.93);
+  border-radius:20px;padding:5px 12px;font-size:11px;color:#8087b0;font-weight:500;}
+.card-body{padding:14px 16px 22px;}
+.card-title{font-size:20px;font-weight:900;color:#1a1d3a;letter-spacing:-.4px;}
+.card-address{font-size:12px;color:#9095b0;margin:3px 0 9px;font-weight:500;}
+.card-desc{font-size:13px;color:#6e74a0;line-height:1.6;margin-bottom:12px;}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.ctag{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;}
+.ctag-free{background:#eef8f3;color:#3cb87a;}
+.ctag-cat{background:#f0f1ff;color:#5b6cde;}
+.ctag-cond{background:#f5f0ff;color:#8b6cde;}
+.card-btns{display:flex;gap:9px;}
+.btn-close{width:48px;height:48px;background:#f4f5ff;border:none;border-radius:14px;
+  cursor:pointer;font-size:16px;color:#6e74a0;display:flex;align-items:center;justify-content:center;}
+.btn-claim{flex:1;background:#5b6cde;color:#fff;border:none;border-radius:14px;
+  font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;}
+.btn-claim:hover{background:#4a5bcd;}
+.btn-heart{width:48px;height:48px;background:#f4f5ff;border:none;border-radius:14px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.btn-heart.saved{background:#fee2e2;}
+
+/* Upload sheet */
+.upload-sheet{position:absolute;inset:0;z-index:600;background:#fff;
+  transition:transform .32s cubic-bezier(.4,0,.2,1);transform:translateY(110%);}
+.upload-sheet.open{transform:translateY(0);}
+.upload-inner{padding:58px 20px 24px;display:flex;flex-direction:column;height:100%;gap:14px;overflow-y:auto;}
+.upload-inner::-webkit-scrollbar{display:none;}
+.up-head{display:flex;align-items:center;gap:12px;}
+.back-btn{width:40px;height:40px;background:#f4f5ff;border-radius:50%;border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.up-title{font-size:22px;font-weight:900;color:#1a1d3a;}
+.photo-zone{border:2px dashed #d0d3f0;border-radius:22px;height:155px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:9px;cursor:pointer;background:#fafbff;transition:background .15s;}
+.photo-zone:hover{background:#f4f5ff;}
+.photo-zone p{font-size:13px;color:#9095b0;font-weight:500;}
+.form-row{display:flex;gap:10px;}
+.fgrp{flex:1;display:flex;flex-direction:column;gap:5px;}
+.flbl{font-size:11px;font-weight:700;color:#9095b0;letter-spacing:.4px;text-transform:uppercase;}
+.fsel,.finput{border:1.5px solid #e8eaf5;border-radius:13px;padding:12px 14px;
+  font-size:13px;color:#1a1d3a;background:#fafbff;outline:none;
+  -webkit-appearance:none;width:100%;}
+.fsel:focus,.finput:focus{border-color:#5b6cde;}
+.loc-row{background:#f0f1ff;border-radius:14px;padding:13px 15px;
+  display:flex;align-items:center;gap:10px;font-size:13px;color:#5b6cde;font-weight:600;}
+.btn-post{background:#5b6cde;color:#fff;border:none;border-radius:16px;
+  padding:17px;font-size:15px;font-weight:700;cursor:pointer;margin-top:auto;
+  transition:background .15s;}
+.btn-post:hover{background:#4a5bcd;}
+
+/* Leaflet overrides */
+.leaflet-control-attribution{font-size:9px!important;padding:2px 6px!important;opacity:.7;}
+.leaflet-control-zoom{display:none!important;}
+.leaflet-marker-icon,.leaflet-marker-shadow{border:none!important;background:none!important;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.leaflet-tile-pane img{image-rendering:auto;}
+
+/* ══════════════════════════════════
+   BROWSE SCREEN
+══════════════════════════════════ */
+#sBrowse{background:#f4f5fb;}
+.browse-top{background:#fff;padding:56px 16px 14px;border-bottom:1px solid #eaecf5;flex-shrink:0;}
+.browse-logo{font-size:24px;font-weight:900;color:#1a1d3a;letter-spacing:-.7px;margin-bottom:13px;}
+.browse-logo em{color:#5b6cde;font-style:normal;}
+.search-wrap{position:relative;margin-bottom:11px;}
+.search-big{width:100%;background:#f4f5ff;border:none;border-radius:16px;
+  padding:13px 40px 13px 44px;font-size:14px;color:#1a1d3a;outline:none;}
+.search-big::placeholder{color:#aab0cc;}
+.search-big:focus{background:#eef0ff;}
+.s-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;}
+.s-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  background:#bbb;border:none;width:20px;height:20px;border-radius:50%;
+  cursor:pointer;font-size:11px;color:#fff;display:none;align-items:center;
+  justify-content:center;font-weight:700;}
+.loc-use{display:flex;align-items:center;gap:7px;cursor:pointer;}
+.loc-use span{font-size:13px;font-weight:600;}
+.cat-scroll{display:flex;gap:9px;overflow-x:auto;padding:14px 16px 4px;flex-shrink:0;}
+.cat-scroll::-webkit-scrollbar{display:none;}
+.bcat{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
+.bcat-ico{width:60px;height:60px;border-radius:18px;display:flex;align-items:center;justify-content:center;transition:outline .15s;}
+.bcat-lbl{font-size:10px;font-weight:700;color:#9095b0;letter-spacing:.3px;text-transform:uppercase;}
+.bcat.on .bcat-lbl{color:#5b6cde;}
+.bcat.on .bcat-ico{outline:2.5px solid #5b6cde;outline-offset:1px;}
+.scroll-area{flex:1;overflow-y:auto;padding-bottom:90px;}
+.scroll-area::-webkit-scrollbar{display:none;}
+.sec-head{font-size:17px;font-weight:800;color:#1a1d3a;padding:14px 16px 10px;}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 16px;}
+.rcard{background:#fff;border-radius:20px;overflow:hidden;cursor:pointer;
+  border:1px solid #eaecf5;position:relative;transition:transform .15s,box-shadow .15s;}
+.rcard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.08);}
+.rcard:active{transform:scale(.97);}
+.rcard-img{height:125px;display:flex;align-items:center;justify-content:center;}
+.rcard-body{padding:10px 12px 13px;}
+.rcard-name{font-size:13px;font-weight:700;color:#1a1d3a;margin-bottom:2px;line-height:1.3;}
+.rcard-meta{font-size:11px;color:#9095b0;}
+.rcard-free{display:inline-block;background:#eef8f3;color:#3cb87a;
+  font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;margin-top:5px;}
+.rcard-heart{position:absolute;top:9px;right:9px;width:30px;height:30px;
+  background:rgba(255,255,255,.93);border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+.no-res{text-align:center;padding:50px 20px;color:#9095b0;font-size:14px;line-height:1.6;}
+.sug-box{padding:0 16px;}
+.sug-item{background:#fff;border-radius:13px;padding:12px 14px;margin-bottom:7px;
+  display:flex;align-items:center;gap:11px;cursor:pointer;border:1px solid #eaecf5;
+  transition:background .15s;}
+.sug-item:hover{background:#f4f5ff;}
+.sug-name{font-size:13px;color:#1a1d3a;font-weight:600;}
+.sug-type{font-size:11px;color:#9095b0;margin-top:1px;}
+
+/* ══════════════════════════════════
+   SAVED SCREEN
+══════════════════════════════════ */
+#sSaved{background:#f4f5fb;}
+.saved-top{background:#fff;padding:56px 16px 16px;border-bottom:1px solid #eaecf5;flex-shrink:0;}
+.saved-title{font-size:24px;font-weight:900;color:#1a1d3a;}
+.saved-sub{font-size:13px;color:#9095b0;margin-top:3px;font-weight:500;}
+.saved-scroll{flex:1;overflow-y:auto;padding-bottom:90px;}
+.saved-scroll::-webkit-scrollbar{display:none;}
+.saved-list{padding:12px 16px;display:flex;flex-direction:column;gap:10px;}
+.scard{background:#fff;border-radius:18px;display:flex;gap:12px;padding:13px;
+  align-items:center;border:1px solid #eaecf5;cursor:pointer;transition:transform .15s;}
+.scard:hover{transform:translateY(-1px);}
+.scard:active{transform:scale(.98);}
+.scard-img{width:72px;height:72px;border-radius:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.scard-info{flex:1;min-width:0;}
+.scard-name{font-size:14px;font-weight:700;color:#1a1d3a;}
+.scard-meta{font-size:11px;color:#9095b0;margin-top:2px;}
+.scard-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;
+  font-weight:700;padding:3px 9px;border-radius:10px;margin-top:5px;}
+.badge-avail{background:#eef8f3;color:#3cb87a;}
+.unsave-btn{width:34px;height:34px;background:#fee2e2;border-radius:50%;border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.saved-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 30px;color:#9095b0;text-align:center;gap:14px;}
+.saved-empty p{font-size:14px;line-height:1.7;}
+
+/* ══════════════════════════════════
+   PROFILE SCREEN
+══════════════════════════════════ */
+#sProf{background:#f4f5fb;}
+.prof-hero{background:#5b6cde;padding:54px 16px 26px;flex-shrink:0;}
+.prof-avatar{width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;margin-bottom:13px;
+  border:3px solid rgba(255,255,255,.4);}
+.prof-name{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.4px;}
+.prof-handle{font-size:13px;color:rgba(255,255,255,.65);margin-top:2px;}
+.prof-stats{display:flex;margin-top:18px;background:rgba(255,255,255,.1);border-radius:16px;overflow:hidden;}
+.pstat{flex:1;padding:13px 0;text-align:center;border-right:1px solid rgba(255,255,255,.12);}
+.pstat:last-child{border:none;}
+.pstat-n{font-size:20px;font-weight:900;color:#fff;}
+.pstat-l{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px;text-transform:uppercase;letter-spacing:.3px;}
+.prof-scroll{flex:1;overflow-y:auto;padding-bottom:90px;}
+.prof-scroll::-webkit-scrollbar{display:none;}
+.prof-sec{margin:16px 16px 0;}
+.prof-sec-title{font-size:11px;font-weight:700;color:#9095b0;text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:9px;}
+.info-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid #eaecf5;}
+.info-row{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid #f0f1fb;}
+.info-row:last-child{border:none;}
+.ir-label{font-size:13px;color:#9095b0;}
+.ir-val{font-size:13px;font-weight:600;color:#1a1d3a;}
+.ir-edit{font-size:12px;color:#5b6cde;font-weight:600;cursor:pointer;}
+.hist-item{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;border:1px solid #eaecf5;}
+.hist-ico{width:44px;height:44px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.hist-name{font-size:13px;font-weight:600;color:#1a1d3a;}
+.hist-meta{font-size:11px;color:#9095b0;margin-top:2px;}
+.ml-item{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;border:1px solid #eaecf5;}
+.ml-ico{width:48px;height:48px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.ml-name{font-size:13px;font-weight:700;color:#1a1d3a;}
+.ml-meta{font-size:11px;color:#9095b0;margin-top:2px;}
+.ml-badge{font-size:10px;font-weight:700;padding:4px 11px;border-radius:10px;margin-left:auto;flex-shrink:0;}
+.ml-live{background:#eef8f3;color:#3cb87a;}
+.ml-taken{background:#f0f1ff;color:#5b6cde;}
+.logout-btn{margin:16px 16px;background:#fff;border:1.5px solid #fee2e2;border-radius:15px;
+  padding:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:background .15s;}
+.logout-btn:hover{background:#fff5f5;}
+.logout-btn span{font-size:14px;font-weight:700;color:#ef4444;}
+</style>
+</head>
+<body>
+<div class="phone-wrap">
+<div class="phone">
+
+<!-- ══ MAP SCREEN ══ -->
+<div class="screen active" id="sMap">
+  <div id="leafletMap"></div>
+
+  <!-- Location / tile status banner -->
+  <div id="locBanner" style="
+    position:absolute;top:170px;left:50%;transform:translateX(-50%);
+    z-index:800;background:rgba(91,108,222,0.92);color:#fff;
+    border-radius:20px;padding:8px 16px;font-size:12px;font-weight:600;
+    font-family:-apple-system,sans-serif;white-space:nowrap;
+    opacity:0;transition:opacity 0.4s;pointer-events:none;
+    box-shadow:0 2px 10px rgba(0,0,0,0.2);">
+    📍 Locating you…
+  </div>
+
+  <!-- Loading overlay shown until first tile loads -->
+  <div id="mapLoading" style="
+    position:absolute;inset:0;z-index:700;
+    background:#e8ecf5;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:14px;
+    transition:opacity 0.6s;">
+    <div style="width:44px;height:44px;border:3px solid #dde0ee;
+      border-top-color:#5b6cde;border-radius:50%;
+      animation:spin 0.8s linear infinite;"></div>
+    <p style="font-size:13px;color:#6e74a0;font-family:-apple-system,sans-serif;font-weight:500;">
+      Loading map…
+    </p>
+    <p style="font-size:11px;color:#9095b0;font-family:-apple-system,sans-serif;text-align:center;max-width:220px;line-height:1.5;">
+      Allow location access when prompted
+    </p>
+  </div>
+
+  <div class="map-topbar">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div class="logo">curby<em>.</em></div>
+      <div style="display:flex;gap:8px;">
+        <button style="width:38px;height:38px;background:#f4f5ff;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#5b6cde" stroke-width="2"/><path d="M14 14l3 3" stroke="#5b6cde" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="map-search">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#9095b0" stroke-width="2"/><path d="M13.5 13.5L17 17" stroke="#9095b0" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Search NYC freebies…</span>
+    </div>
+    <div class="filter-row" id="mapFilters">
+      <div class="fchip on" data-f="all">✦ All</div>
+      <div class="fchip" data-f="furniture">Furniture</div>
+      <div class="fchip" data-f="lighting">Lighting</div>
+      <div class="fchip" data-f="decor">Decor</div>
+      <div class="fchip" data-f="appliances">Appliances</div>
+      <div class="fchip" data-f="clothing">Clothing</div>
+      <div class="fchip" data-f="books">Books</div>
+    </div>
+  </div>
+
+  <div class="map-ctrl">
+    <button class="map-btn" id="btnZoomIn">+</button>
+    <button class="map-btn" id="btnZoomOut">−</button>
+    <button class="map-btn" id="btnMyLoc" title="My location">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="#5b6cde" stroke-width="2"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2" stroke="#5b6cde" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <div class="count-pill"><div class="cpulse"></div><span id="mapCount">Finding listings…</span></div>
+  <button class="post-fab" id="openUpload">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 4v14M4 11h14" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+  </button>
+
+  <!-- Listing Card -->
+  <div class="card-sheet" id="cardSheet">
+    <div class="card-inner">
+      <div class="drag-bar"></div>
+      <div class="card-img-box">
+        <canvas id="cardCanvas" width="358" height="185"></canvas>
+        <div class="avail-tag"><div class="avail-dot"></div>Available</div>
+        <div class="time-tag" id="cTime">—</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title" id="cName">—</div>
+        <div class="card-address" id="cAddr">—</div>
+        <div class="card-desc" id="cDesc">—</div>
+        <div class="card-tags">
+          <span class="ctag ctag-free">Free</span>
+          <span class="ctag ctag-cat" id="cCat">—</span>
+          <span class="ctag ctag-cond" id="cCond">—</span>
+        </div>
+        <div class="card-btns">
+          <button class="btn-close" id="closeCard">✕</button>
+          <button class="btn-claim">I want this!</button>
+          <button class="btn-heart" id="heartBtn" onclick="toggleSave()">
+            <svg id="heartIco" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 16.5S3 12 3 7a4 4 0 017-2.6A4 4 0 0117 7c0 5-7 9.5-7 9.5z" stroke="#5b6cde" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Sheet -->
+  <div class="upload-sheet" id="uploadSheet">
+    <div class="upload-inner">
+      <div class="up-head">
+        <button class="back-btn" id="closeUpload">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#5b6cde" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="up-title">Post a free item</div>
+      </div>
+      <div class="photo-zone">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="4" y="9" width="30" height="22" rx="4" stroke="#c0c4df" stroke-width="2"/><circle cx="19" cy="20" r="5.5" stroke="#c0c4df" stroke-width="2"/><path d="M15 9l2-3h4l2 3" stroke="#c0c4df" stroke-width="2" stroke-linejoin="round"/></svg>
+        <p>Tap to add a photo</p>
+      </div>
+      <div class="form-row">
+        <div class="fgrp">
+          <div class="flbl">Category</div>
+          <select class="fsel"><option>Furniture</option><option>Lighting</option><option>Decor</option><option>Appliances</option><option>Clothing</option><option>Books</option></select>
+        </div>
+        <div class="fgrp">
+          <div class="flbl">Condition</div>
+          <select class="fsel"><option>Excellent</option><option>Good</option><option>Fair</option></select>
+        </div>
+      </div>
+      <div class="fgrp">
+        <div class="flbl">Notes (optional)</div>
+        <input class="finput" type="text" placeholder="e.g. Pick up before 8pm, ring buzzer 3B">
+      </div>
+      <div class="loc-row">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.7 4.5 8.5 4.5 8.5S12.5 9.7 12.5 6c0-2.5-2-4.5-4.5-4.5z" fill="#5b6cde"/><circle cx="8" cy="6" r="1.5" fill="white"/></svg>
+        Using your current location
+      </div>
+      <button class="btn-post" id="doPost">Post item ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BROWSE SCREEN ══ -->
+<div class="screen" id="sBrowse">
+  <div class="browse-top">
+    <div class="browse-logo">curby<em>.</em></div>
+    <div class="search-wrap">
+      <svg class="s-ico" width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#9095b0" stroke-width="2"/><path d="M13.5 13.5L17 17" stroke="#9095b0" stroke-width="2" stroke-linecap="round"/></svg>
+      <input class="search-big" id="browseSearch" placeholder="Search furniture, brands…" autocomplete="off">
+      <button class="s-clear" id="searchClear">✕</button>
+    </div>
+    <div class="loc-use" id="useLocation">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1C5.2 1 3 3.2 3 6c0 3.8 5 9 5 9s5-5.2 5-9c0-2.8-2.2-5-5-5z" fill="#5b6cde"/><circle cx="8" cy="6" r="2" fill="white"/></svg>
+      <span style="color:#5b6cde;">Use my location</span>
+      <span style="font-size:13px;color:#9095b0;font-weight:500;">· NYC, NY</span>
+    </div>
+  </div>
+  <div class="cat-scroll" id="browseCats">
+    <div class="bcat on" data-bc="all"><div class="bcat-ico" style="background:#f0f1ff;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#5b6cde" stroke-width="1.8"/><path d="M8 12h8M12 8v8" stroke="#5b6cde" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="bcat-lbl">All</div></div>
+    <div class="bcat" data-bc="furniture"><div class="bcat-ico" style="background:#eef0ff;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="13" width="18" height="7" rx="2.5" stroke="#5b6cde" stroke-width="1.8"/><path d="M6 13V10a3 3 0 016 0v3M12 13V10a3 3 0 016 0v3" stroke="#5b6cde" stroke-width="1.8"/><path d="M5 20v2M19 20v2" stroke="#5b6cde" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="bcat-lbl">Furniture</div></div>
+    <div class="bcat" data-bc="lighting"><div class="bcat-ico" style="background:#fffbea;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 016 6c0 2.2-1.1 4.2-2.8 5.4V17H8.8V14.4A6 6 0 0112 3z" stroke="#f5a623" stroke-width="1.8"/><path d="M9 17h6M9.5 20h5" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="bcat-lbl">Lighting</div></div>
+    <div class="bcat" data-bc="decor"><div class="bcat-ico" style="background:#f5f0ff;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3c0 0-8 5-8 10a8 8 0 0016 0c0-5-8-10-8-10z" stroke="#8b5cf6" stroke-width="1.8"/></svg></div><div class="bcat-lbl">Decor</div></div>
+    <div class="bcat" data-bc="appliances"><div class="bcat-ico" style="background:#ecfeff;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2.5" stroke="#06b6d4" stroke-width="1.8"/><path d="M4 12h16" stroke="#06b6d4" stroke-width="1.6"/><circle cx="19" cy="9.5" r="1.2" fill="#06b6d4"/></svg></div><div class="bcat-lbl">Appliances</div></div>
+    <div class="bcat" data-bc="clothing"><div class="bcat-ico" style="background:#fdf2f8;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 3L6 7.5l3.5 1.5v11h7V9l3.5-1.5L17 3" stroke="#ec4899" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 3c0 1.7 1.3 3 3 3s3-1.3 3-3" stroke="#ec4899" stroke-width="1.8"/></svg></div><div class="bcat-lbl">Clothing</div></div>
+    <div class="bcat" data-bc="books"><div class="bcat-ico" style="background:#ecfdf5;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="11" height="18" rx="2" stroke="#10b981" stroke-width="1.8"/><path d="M15 5.5l5 2v12l-5-2" stroke="#10b981" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div class="bcat-lbl">Books</div></div>
+  </div>
+  <div class="scroll-area">
+    <div class="sug-box" id="sugBox"></div>
+    <div class="sec-head" id="browseHeading">Trending near you</div>
+    <div class="results-grid" id="resultsGrid"></div>
+    <div class="no-res" id="noResults" style="display:none;">
+      Nothing found — try a different search or category.
+    </div>
+  </div>
+</div>
+
+<!-- ══ SAVED SCREEN ══ -->
+<div class="screen" id="sSaved">
+  <div class="saved-top">
+    <div class="saved-title">Saved items</div>
+    <div class="saved-sub" id="savedSub">Your bookmarked freebies</div>
+  </div>
+  <div class="saved-scroll"><div class="saved-list" id="savedList"></div></div>
+</div>
+
+<!-- ══ PROFILE SCREEN ══ -->
+<div class="screen" id="sProf">
+  <div class="prof-hero">
+    <div class="prof-avatar">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="15" r="7.5" stroke="white" stroke-width="2.2"/><path d="M6 34c0-6 5.8-10.5 13-10.5S32 28 32 34" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </div>
+    <div class="prof-name">Alex Rivera</div>
+    <div class="prof-handle">@alexrivera · Member since 2024</div>
+    <div class="prof-stats">
+      <div class="pstat"><div class="pstat-n">3</div><div class="pstat-l">Posted</div></div>
+      <div class="pstat"><div class="pstat-n" id="profSaved">0</div><div class="pstat-l">Saved</div></div>
+      <div class="pstat"><div class="pstat-n">7</div><div class="pstat-l">Claimed</div></div>
+      <div class="pstat"><div class="pstat-n">4.9★</div><div class="pstat-l">Rating</div></div>
+    </div>
+  </div>
+  <div class="prof-scroll">
+    <div class="prof-sec">
+      <div class="prof-sec-title">Account info</div>
+      <div class="info-card">
+        <div class="info-row"><span class="ir-label">Name</span><div style="display:flex;align-items:center;gap:10px;"><span class="ir-val">Alex Rivera</span><span class="ir-edit">Edit</span></div></div>
+        <div class="info-row"><span class="ir-label">Email</span><div style="display:flex;align-items:center;gap:10px;"><span class="ir-val">alex@email.com</span><span class="ir-edit">Edit</span></div></div>
+        <div class="info-row"><span class="ir-label">Location</span><div style="display:flex;align-items:center;gap:10px;"><span class="ir-val">Union Square, NYC</span><span class="ir-edit">Edit</span></div></div>
+        <div class="info-row"><span class="ir-label">Notifications</span><div style="display:flex;align-items:center;gap:10px;"><span class="ir-val">On — radius 1 mi</span><span class="ir-edit">Edit</span></div></div>
+      </div>
+    </div>
+    <div class="prof-sec" style="margin-top:14px;">
+      <div class="prof-sec-title">Recent activity</div>
+      <div id="histList"></div>
+    </div>
+    <div class="prof-sec" style="margin-top:14px;">
+      <div class="prof-sec-title">My listings</div>
+      <div id="myListings"></div>
+    </div>
+    <div class="logout-btn" style="margin-top:14px;"><span>Log out</span></div>
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<div class="bnav" id="mainNav">
+  <button class="ni on" data-s="sMap">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 7l5-2 6 3 5-2v10l-5 2-6-3-5 2V7z" stroke="#5b6cde" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 5v10M14 8v10" stroke="#5b6cde" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span class="nl" style="color:#5b6cde;">Map</span>
+  </button>
+  <button class="ni" data-s="sBrowse">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" stroke="#c0c4df" stroke-width="1.8"/><rect x="12" y="3" width="7" height="7" rx="2" stroke="#c0c4df" stroke-width="1.8"/><rect x="3" y="12" width="7" height="7" rx="2" stroke="#c0c4df" stroke-width="1.8"/><rect x="12" y="12" width="7" height="7" rx="2" stroke="#c0c4df" stroke-width="1.8"/></svg>
+    <span class="nl">Browse</span>
+  </button>
+  <button class="ni" data-s="sSaved">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 3h12a1 1 0 011 1v14l-7-3.5L4 18V4a1 1 0 011-1z" stroke="#c0c4df" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    <span class="nl">Saved</span>
+  </button>
+  <button class="ni" data-s="sProf">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="#c0c4df" stroke-width="1.8"/><path d="M3 19c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="#c0c4df" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span class="nl">Profile</span>
+  </button>
+</div>
+
+</div><!-- /phone -->
+</div><!-- /phone-wrap -->
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+<script>
+/* ── DATA ── */
+const CAT_COL={furniture:'#5b6cde',lighting:'#f5a623',decor:'#8b5cf6',appliances:'#06b6d4',clothing:'#ec4899',books:'#10b981'};
+const CAT_BG={furniture:'#eef0ff',lighting:'#fffbea',decor:'#f5f0ff',appliances:'#ecfeff',clothing:'#fdf2f8',books:'#ecfdf5'};
+const CAT_LABEL={furniture:'Furniture',lighting:'Lighting',decor:'Decor',appliances:'Appliances',clothing:'Clothing',books:'Books'};
+
+const UNION_SQ=[40.7359,-73.9906];
+let userLat=UNION_SQ[0],userLng=UNION_SQ[1];
+let leafMap,userMarker,pinMarkers=[],activeFilter='all',curPin=null,savedIds=new Set();
+let browseFilter='all',searchQ='';
+
+const listings=[
+  {id:1,lat:40.7380,lng:-73.9950,cat:'furniture',name:'Green Velvet Sofa',desc:'2-seater mid-century. Minor wear on left armrest — great bones.',address:'W 17th St & 7th Ave, Chelsea',cond:'Good',time:'1h ago',brand:'West Elm'},
+  {id:2,lat:40.7295,lng:-73.9965,cat:'furniture',name:'IKEA Billy Bookshelf',desc:'White, 6ft tall. Disassembled, all hardware included.',address:'Spring St & Sullivan St, SoHo',cond:'Good',time:'3h ago',brand:'IKEA'},
+  {id:3,lat:40.7440,lng:-73.9880,cat:'furniture',name:'Dining Chairs ×4',desc:'Solid oak matching set. Light scuffs on legs.',address:'E 23rd St & 2nd Ave, Gramercy',cond:'Fair',time:'2h ago',brand:'Pottery Barn'},
+  {id:4,lat:40.7320,lng:-73.9860,cat:'furniture',name:'Full-Length Mirror',desc:'Gold metal frame, 5ft. Tiny chip on bottom corner.',address:'E 10th St & 1st Ave, East Village',cond:'Good',time:'6h ago',brand:'CB2'},
+  {id:5,lat:40.7510,lng:-73.9940,cat:'furniture',name:'Queen Bed Frame',desc:'Dark walnut, no mattress. 3rd floor walkup!',address:'W 34th St & 8th Ave, Midtown',cond:'Good',time:'4h ago',brand:'Room & Board'},
+  {id:6,lat:40.7260,lng:-73.9980,cat:'furniture',name:'Glass Coffee Table',desc:'Powder-coated black legs. Minor scratches on glass.',address:'Prince St & Mercer St, SoHo',cond:'Fair',time:'8h ago',brand:'Article'},
+  {id:7,lat:40.7350,lng:-73.9970,cat:'furniture',name:'Ergonomic Office Chair',desc:'Fully adjustable. One armrest slightly loose.',address:'W 13th St & 6th Ave, West Village',cond:'Good',time:'45m ago',brand:'Herman Miller'},
+  {id:8,lat:40.7395,lng:-73.9830,cat:'furniture',name:'Pine Dresser 6-Drawer',desc:'All hardware intact. Water stain on top.',address:'E 19th St & Irving Pl, Gramercy',cond:'Fair',time:'5h ago',brand:'IKEA'},
+  {id:9,lat:40.7372,lng:-73.9992,cat:'lighting',name:'Arc Floor Lamp',desc:'Matte black + brass shade. Works perfectly, bulb included.',address:'W 16th St & 7th Ave, Chelsea',cond:'Excellent',time:'30m ago',brand:'West Elm'},
+  {id:10,lat:40.7425,lng:-73.9898,cat:'lighting',name:'Gooseneck Desk Lamps ×2',desc:'White, matching set. Both work perfectly.',address:'W 23rd St & 5th Ave, Flatiron',cond:'Excellent',time:'2h ago',brand:'IKEA'},
+  {id:11,lat:40.7282,lng:-73.9922,cat:'lighting',name:'Rattan Pendant Light',desc:'Boho style. Cord + socket included, no bulb.',address:'Houston St & Broadway, NoHo',cond:'Good',time:'7h ago',brand:'Urban Outfitters'},
+  {id:12,lat:40.7338,lng:-73.9848,cat:'lighting',name:'Ceramic Table Lamp',desc:'Linen shade, warm tone. Perfect condition.',address:'E 12th St & 3rd Ave, East Village',cond:'Excellent',time:'1h ago',brand:'CB2'},
+  {id:13,lat:40.7402,lng:-73.9872,cat:'decor',name:'Framed Art Prints ×3',desc:'Bohemian prints 16×20 each. No damage.',address:'E 21st St & Park Ave S, Flatiron',cond:'Excellent',time:'45m ago',brand:null},
+  {id:14,lat:40.7357,lng:-73.9908,cat:'decor',name:'Monstera Plant',desc:'4yr old healthy monstera in terracotta pot.',address:'Union Square W & 15th St',cond:'Excellent',time:'20m ago',brand:null},
+  {id:15,lat:40.7462,lng:-73.9948,cat:'decor',name:'Persian-Style Rug 5×8',desc:'Warm tones, no stains, machine washable.',address:'W 28th St & 6th Ave, Flower District',cond:'Good',time:'3h ago',brand:'Rugs USA'},
+  {id:16,lat:40.7242,lng:-73.9972,cat:'decor',name:'Throw Pillows ×5',desc:'Assorted sizes and textures. Freshly cleaned.',address:'Canal St & Thompson St, SoHo',cond:'Good',time:'4h ago',brand:null},
+  {id:17,lat:40.7482,lng:-73.9868,cat:'appliances',name:'Ninja Air Fryer 4qt',desc:'Works great. Missing one rack — otherwise perfect.',address:'E 30th St & Lex Ave, Murray Hill',cond:'Good',time:'2h ago',brand:'Ninja'},
+  {id:18,lat:40.7305,lng:-73.9852,cat:'appliances',name:'KitchenAid Stand Mixer',desc:'Red, tested and works. Missing one attachment.',address:'E 7th St & Ave A, East Village',cond:'Good',time:'5h ago',brand:'KitchenAid'},
+  {id:19,lat:40.7535,lng:-73.9958,cat:'appliances',name:'Box Fan',desc:'All 3 speeds work. Slightly noisy on high.',address:"W 38th St & 9th Ave, Hell's Kitchen",cond:'Fair',time:'1h ago',brand:'Honeywell'},
+  {id:20,lat:40.7272,lng:-73.9988,cat:'appliances',name:'Panasonic Microwave',desc:"1100W, 2 years old. Moving — can't take it!",address:'Broome St & Wooster St, SoHo',cond:'Excellent',time:'3h ago',brand:'Panasonic'},
+  {id:21,lat:40.7412,lng:-73.9958,cat:'clothing',name:'Winter Coat Lot',desc:'3 coats, size M. North Face, Zara, H&M.',address:'W 22nd St & 7th Ave, Chelsea',cond:'Good',time:'1h ago',brand:'North Face'},
+  {id:22,lat:40.7492,lng:-73.9888,cat:'clothing',name:"Men's Suits ×2",desc:'42R navy + charcoal. Both dry cleaned.',address:'E 32nd St & Madison Ave, Midtown',cond:'Good',time:'6h ago',brand:'J.Crew'},
+  {id:23,lat:40.7225,lng:-73.9962,cat:'clothing',name:'Sneaker Collection',desc:'Size 10. Nike, Adidas, New Balance.',address:'Spring St & Crosby St, SoHo',cond:'Fair',time:'4h ago',brand:'Nike'},
+  {id:24,lat:40.7312,lng:-73.9882,cat:'books',name:'Book Box 40+',desc:'Fiction, design, cookbooks. Grab what you want!',address:'E 8th St & 2nd Ave, East Village',cond:'Good',time:'2h ago',brand:null},
+  {id:25,lat:40.7452,lng:-73.9918,cat:'books',name:'Art & Design Books',desc:'Architecture, fashion, photography. Coffee table quality.',address:'W 26th St & 6th Ave, Chelsea',cond:'Excellent',time:'1h ago',brand:null},
+];
+
+/* ── UTILS ── */
+function haversine(a,b,c,d){
+  const R=3958.8,dL=(c-a)*Math.PI/180,dG=(d-b)*Math.PI/180;
+  const x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dG/2)**2;
+  return(R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))).toFixed(2);
+}
+
+function drawCatIcon(c,cat,cx,cy,sz,col){
+  c.strokeStyle=col;c.fillStyle=col;
+  c.lineWidth=Math.max(1.4,sz*0.04);c.lineCap='round';c.lineJoin='round';
+  const h=sz/2;
+  if(cat==='furniture'){
+    c.beginPath();c.roundRect(cx-h*.9,cy-h*.1,h*1.8,h*.65,3);c.stroke();
+    c.beginPath();c.moveTo(cx-h*.6,cy-h*.1);c.lineTo(cx-h*.6,cy-h*.55);
+    c.quadraticCurveTo(cx-h*.6,cy-h*.85,cx-h*.1,cy-h*.85);c.lineTo(cx+h*.1,cy-h*.85);
+    c.quadraticCurveTo(cx+h*.6,cy-h*.85,cx+h*.6,cy-h*.55);c.lineTo(cx+h*.6,cy-h*.1);c.stroke();
+    c.beginPath();c.moveTo(cx-h*.7,cy+h*.55);c.lineTo(cx-h*.7,cy+h*.9);
+    c.moveTo(cx+h*.7,cy+h*.55);c.lineTo(cx+h*.7,cy+h*.9);c.stroke();
+  }else if(cat==='lighting'){
+    c.beginPath();c.arc(cx,cy-h*.3,h*.52,0,Math.PI*2);c.stroke();
+    c.beginPath();c.moveTo(cx-h*.3,cy+h*.22);c.lineTo(cx+h*.3,cy+h*.22);
+    c.moveTo(cx-h*.2,cy+h*.52);c.lineTo(cx+h*.2,cy+h*.52);c.stroke();
+    c.beginPath();c.moveTo(cx,cy-h*.82);c.lineTo(cx,cy-h*1.05);c.stroke();
+  }else if(cat==='decor'){
+    c.beginPath();c.moveTo(cx,cy-h*.9);
+    c.bezierCurveTo(cx+h*.8,cy-h*.35,cx+h*.85,cy+h*.45,cx,cy+h*.9);
+    c.bezierCurveTo(cx-h*.85,cy+h*.45,cx-h*.8,cy-h*.35,cx,cy-h*.9);c.stroke();
+  }else if(cat==='appliances'){
+    c.beginPath();c.roundRect(cx-h*.78,cy-h*.68,h*1.56,h*1.42,3);c.stroke();
+    c.beginPath();c.moveTo(cx-h*.78,cy-h*.18);c.lineTo(cx+h*.78,cy-h*.18);c.stroke();
+    c.beginPath();c.arc(cx+h*.48,cy-h*.48,h*.14,0,Math.PI*2);c.fill();
+  }else if(cat==='clothing'){
+    c.beginPath();c.moveTo(cx-h*.68,cy-h*.48);c.lineTo(cx-h*.28,cy-h*.78);
+    c.quadraticCurveTo(cx,cy-h*.5,cx+h*.28,cy-h*.78);c.lineTo(cx+h*.68,cy-h*.48);
+    c.lineTo(cx+h*.52,cy-h*.1);c.lineTo(cx+h*.52,cy+h*.88);
+    c.lineTo(cx-h*.52,cy+h*.88);c.lineTo(cx-h*.52,cy-h*.1);c.closePath();c.stroke();
+  }else if(cat==='books'){
+    c.beginPath();c.roundRect(cx-h*.68,cy-h*.8,h*.52,h*1.6,2);c.stroke();
+    c.beginPath();c.roundRect(cx-h*.1,cy-h*.8,h*.48,h*1.6,2);c.stroke();
+    c.beginPath();c.roundRect(cx+h*.44,cy-h*.62,h*.38,h*1.38,2);c.stroke();
+  }
+}
+
+/* ── PIN ICONS ── */
+function makePinIcon(p,selected){
+  const col=CAT_COL[p.cat],bg=CAT_BG[p.cat];
+  const sz=selected?52:44;
+  const cv=document.createElement('canvas');cv.width=sz+8;cv.height=sz+20;
+  const c=cv.getContext('2d');
+  // shadow
+  c.fillStyle='rgba(0,0,0,0.15)';
+  c.beginPath();c.ellipse((sz+8)/2,sz+17,sz*.3,sz*.1,0,0,Math.PI*2);c.fill();
+  // bubble
+  c.fillStyle=selected?col:bg;c.strokeStyle=col;c.lineWidth=selected?0:2.2;
+  c.beginPath();c.arc((sz+8)/2,sz/2,sz/2-1,0,Math.PI*2);c.fill();
+  if(!selected)c.stroke();
+  // tail
+  c.fillStyle=selected?col:bg;c.strokeStyle=col;c.lineWidth=selected?0:2.2;
+  c.beginPath();
+  c.moveTo((sz+8)/2-6,sz-2);c.lineTo((sz+8)/2,sz+14);c.lineTo((sz+8)/2+6,sz-2);
+  c.fill();if(!selected)c.stroke();
+  // saved dot
+  if(savedIds.has(p.id)){
+    c.fillStyle='#ef4444';c.beginPath();c.arc(sz,5,7,0,Math.PI*2);c.fill();
+    c.fillStyle='white';c.beginPath();c.arc(sz,5,3.5,0,Math.PI*2);c.fill();
+  }
+  // icon
+  drawCatIcon(c,p.cat,(sz+8)/2,sz/2,sz*.72,selected?'white':col);
+  return L.icon({
+    iconUrl:cv.toDataURL(),
+    iconSize:[sz+8,sz+20],
+    iconAnchor:[(sz+8)/2,sz+16],
+    popupAnchor:[0,-(sz+16)]
+  });
+}
+
+function makeUserIcon(){
+  const cv=document.createElement('canvas');cv.width=36;cv.height=36;
+  const c=cv.getContext('2d');
+  c.fillStyle='rgba(91,108,222,0.22)';c.beginPath();c.arc(18,18,17,0,Math.PI*2);c.fill();
+  c.fillStyle='#5b6cde';c.strokeStyle='white';c.lineWidth=3;
+  c.beginPath();c.arc(18,18,10,0,Math.PI*2);c.fill();c.stroke();
+  c.fillStyle='white';c.beginPath();c.arc(18,18,4.5,0,Math.PI*2);c.fill();
+  return L.icon({iconUrl:cv.toDataURL(),iconSize:[36,36],iconAnchor:[18,18]});
+}
+
+/* ── MAP ── */
+function getFiltered(){
+  return activeFilter==='all'?listings:listings.filter(p=>p.cat===activeFilter);
+}
+
+function updateMapCount(){
+  if(!leafMap)return;
+  const b=leafMap.getBounds();
+  const v=getFiltered().filter(p=>b.contains([p.lat,p.lng]));
+  document.getElementById('mapCount').textContent=v.length+' nearby';
+}
+
+function refreshPins(){
+  pinMarkers.forEach(m=>leafMap.removeLayer(m));pinMarkers=[];
+  getFiltered().forEach(p=>{
+    const sel=curPin&&curPin.id===p.id;
+    const m=L.marker([p.lat,p.lng],{icon:makePinIcon(p,sel),zIndexOffset:sel?1000:0});
+    m.on('click',()=>openCard(p));
+    m.addTo(leafMap);pinMarkers.push(m);
+  });
+  updateMapCount();
+}
+
+function initLeaflet(lat,lng){
+  userLat=lat;userLng=lng;
+  leafMap=L.map('leafletMap',{
+    center:[lat,lng],zoom:16,
+    zoomControl:false,
+    attributionControl:true,
+    preferCanvas:false
+  });
+
+  /* Try multiple tile providers in order — first one to load tiles wins */
+  const providers=[
+    {
+      url:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      opts:{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}
+    },
+    {
+      url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      opts:{maxZoom:19,subdomains:'abc',attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}
+    },
+    {
+      url:'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+      opts:{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap © CARTO'}
+    },
+    {
+      url:'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      opts:{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap © CARTO'}
+    },
+  ];
+
+  let activeTileLayer=null;
+  let loadedProvider=false;
+  let trying=0;
+
+  function tryProvider(i){
+    if(i>=providers.length)return;
+    if(activeTileLayer)leafMap.removeLayer(activeTileLayer);
+    const p=providers[i];
+    activeTileLayer=L.tileLayer(p.url,p.opts);
+    let fired=false;
+    activeTileLayer.on('tileload',()=>{
+      if(!fired&&!loadedProvider){fired=true;loadedProvider=true;showLocBanner();}
+    });
+    activeTileLayer.on('tileerror',()=>{
+      if(!fired){fired=true;setTimeout(()=>tryProvider(i+1),200);}
+    });
+    activeTileLayer.addTo(leafMap);
+    /* Fallback timeout — if no tile loads in 4s, try next */
+    setTimeout(()=>{if(!loadedProvider&&!fired){fired=true;tryProvider(i+1);}},4000);
+  }
+
+  tryProvider(0);
+
+  userMarker=L.marker([lat,lng],{icon:makeUserIcon(),zIndexOffset:9999,title:'You are here'}).addTo(leafMap);
+
+  leafMap.on('moveend zoomend',updateMapCount);
+  refreshPins();
+}
+
+function showLocBanner(){
+  const b=document.getElementById('locBanner');
+  if(b){b.textContent='📍 Map loaded!';b.style.opacity='1';setTimeout(()=>b.style.opacity='0',2000);}
+  const ov=document.getElementById('mapLoading');
+  if(ov){ov.style.opacity='0';setTimeout(()=>ov.style.display='none',700);}
+}
+
+document.getElementById('btnZoomIn').onclick=()=>leafMap&&leafMap.zoomIn();
+document.getElementById('btnZoomOut').onclick=()=>leafMap&&leafMap.zoomOut();
+document.getElementById('btnMyLoc').onclick=()=>leafMap&&leafMap.setView([userLat,userLng],15);
+
+document.getElementById('mapFilters').addEventListener('click',e=>{
+  const c=e.target.closest('.fchip');if(!c)return;
+  document.querySelectorAll('.fchip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on');activeFilter=c.dataset.f;
+  curPin=null;document.getElementById('cardSheet').classList.remove('open');
+  refreshPins();
+});
+
+document.getElementById('openUpload').onclick=()=>document.getElementById('uploadSheet').classList.add('open');
+document.getElementById('closeUpload').onclick=()=>document.getElementById('uploadSheet').classList.remove('open');
+document.getElementById('doPost').onclick=()=>{document.getElementById('uploadSheet').classList.remove('open');};
+
+/* ── CARD ── */
+function openCard(p){
+  curPin=p;
+  const dist=haversine(userLat,userLng,p.lat,p.lng);
+  document.getElementById('cName').textContent=p.name;
+  document.getElementById('cAddr').textContent=dist+' mi away · '+p.address;
+  document.getElementById('cDesc').textContent=p.desc;
+  document.getElementById('cCat').textContent=CAT_LABEL[p.cat];
+  document.getElementById('cCond').textContent=p.cond+' condition';
+  document.getElementById('cTime').textContent=p.time;
+  const cc=document.getElementById('cardCanvas');
+  const c=cc.getContext('2d');
+  c.fillStyle=CAT_BG[p.cat];c.fillRect(0,0,358,185);
+  drawCatIcon(c,p.cat,179,92,120,CAT_COL[p.cat]);
+  refreshHeart();
+  document.getElementById('cardSheet').classList.add('open');
+  refreshPins();
+}
+
+function refreshHeart(){
+  if(!curPin)return;
+  const on=savedIds.has(curPin.id);
+  document.getElementById('heartBtn').className='btn-heart'+(on?' saved':'');
+  document.getElementById('heartIco').setAttribute('fill',on?'#ef4444':'none');
+  document.getElementById('heartIco').querySelector('path').setAttribute('stroke',on?'#ef4444':'#5b6cde');
+}
+
+function toggleSave(){
+  if(!curPin)return;
+  if(savedIds.has(curPin.id))savedIds.delete(curPin.id);else savedIds.add(curPin.id);
+  refreshHeart();renderSaved();renderProfile();refreshPins();
+}
+
+document.getElementById('closeCard').onclick=()=>{
+  curPin=null;document.getElementById('cardSheet').classList.remove('open');refreshPins();
+};
+
+/* ── BROWSE ── */
+function renderBrowse(){
+  const q=searchQ.toLowerCase();
+  let pool=browseFilter==='all'?listings:listings.filter(p=>p.cat===browseFilter);
+  if(q)pool=pool.filter(p=>
+    p.name.toLowerCase().includes(q)||
+    (p.brand&&p.brand.toLowerCase().includes(q))||
+    p.cat.includes(q)||p.address.toLowerCase().includes(q)
+  );
+  const heading=q?`Results for "${searchQ}"`:
+    browseFilter==='all'?'Trending near you':CAT_LABEL[browseFilter]+' near you';
+  document.getElementById('browseHeading').textContent=heading;
+  const grid=document.getElementById('resultsGrid');
+  const no=document.getElementById('noResults');
+  if(!pool.length){grid.innerHTML='';no.style.display='block';return;}
+  no.style.display='none';
+  grid.innerHTML=pool.map(p=>`
+    <div class="rcard" onclick="openFromBrowse(${p.id})">
+      <div class="rcard-img" style="background:${CAT_BG[p.cat]};">
+        <canvas id="bc${p.id}" width="180" height="125"></canvas>
+      </div>
+      <button class="rcard-heart" onclick="event.stopPropagation();quickSave(${p.id})">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="${savedIds.has(p.id)?'#ef4444':'none'}">
+          <path d="M10 16.5S3 12 3 7a4 4 0 017-2.6A4 4 0 0117 7c0 5-7 9.5-7 9.5z"
+            stroke="${savedIds.has(p.id)?'#ef4444':'#c0c4df'}" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="rcard-body">
+        <div class="rcard-name">${p.name}</div>
+        <div class="rcard-meta">${p.address.split(',')[0]}</div>
+        ${p.brand?`<div class="rcard-meta">${p.brand}</div>`:''}
+        <div class="rcard-free">Free</div>
+      </div>
+    </div>`).join('');
+  pool.forEach(p=>{
+    const cc=document.getElementById('bc'+p.id);if(!cc)return;
+    const c=cc.getContext('2d');c.fillStyle=CAT_BG[p.cat];c.fillRect(0,0,180,125);
+    drawCatIcon(c,p.cat,90,62,78,CAT_COL[p.cat]);
+  });
+}
+
+function openFromBrowse(id){
+  const p=listings.find(x=>x.id===id);if(!p)return;
+  switchScreen('sMap');
+  setTimeout(()=>{
+    if(leafMap)leafMap.setView([p.lat,p.lng],16);
+    openCard(p);
+  },100);
+}
+
+function quickSave(id){
+  if(savedIds.has(id))savedIds.delete(id);else savedIds.add(id);
+  renderBrowse();renderSaved();renderProfile();
+  if(leafMap)refreshPins();
+}
+
+function renderSuggestions(){
+  const box=document.getElementById('sugBox');
+  if(!searchQ){box.innerHTML='';return;}
+  const q=searchQ.toLowerCase();
+  const brands=[...new Set(listings.map(p=>p.brand).filter(Boolean))].filter(b=>b.toLowerCase().includes(q));
+  box.innerHTML=brands.slice(0,4).map(b=>`
+    <div class="sug-item" onclick="document.getElementById('browseSearch').value='${b}';searchQ='${b}';renderBrowse();document.getElementById('sugBox').innerHTML='';">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#9095b0" stroke-width="2"/><path d="M13.5 13.5L17 17" stroke="#9095b0" stroke-width="2" stroke-linecap="round"/></svg>
+      <div><div class="sug-name">${b}</div><div class="sug-type">Brand</div></div>
+    </div>`).join('');
+}
+
+document.getElementById('browseCats').addEventListener('click',e=>{
+  const bc=e.target.closest('.bcat');if(!bc)return;
+  document.querySelectorAll('.bcat').forEach(x=>x.classList.remove('on'));
+  bc.classList.add('on');browseFilter=bc.dataset.bc;renderBrowse();
+});
+
+const si=document.getElementById('browseSearch');
+const sc=document.getElementById('searchClear');
+si.addEventListener('input',()=>{
+  searchQ=si.value;sc.style.display=searchQ?'flex':'none';
+  renderSuggestions();renderBrowse();
+});
+sc.addEventListener('click',()=>{si.value='';searchQ='';sc.style.display='none';renderSuggestions();renderBrowse();});
+document.getElementById('useLocation').onclick=()=>{si.value='Near me';searchQ='';sc.style.display='flex';renderBrowse();};
+
+/* ── SAVED ── */
+function renderSaved(){
+  const list=document.getElementById('savedList');
+  const items=listings.filter(p=>savedIds.has(p.id));
+  document.getElementById('savedSub').textContent=
+    items.length?`${items.length} saved item${items.length>1?'s':''}`:' Your bookmarked freebies';
+  if(!items.length){
+    list.innerHTML=`<div class="saved-empty">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none"><path d="M28 46S8 34 8 20a12 12 0 0120-9A12 12 0 0148 20c0 14-20 26-20 26z" stroke="#dde0f0" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      <p>No saved items yet.<br>Tap the heart on any listing<br>to bookmark it here.</p>
+    </div>`;
+    return;
+  }
+  list.innerHTML=items.map(p=>`
+    <div class="scard" onclick="openFromBrowse(${p.id})">
+      <div class="scard-img" style="background:${CAT_BG[p.cat]};">
+        <canvas id="sc${p.id}" width="72" height="72"></canvas>
+      </div>
+      <div class="scard-info">
+        <div class="scard-name">${p.name}</div>
+        <div class="scard-meta">${haversine(userLat,userLng,p.lat,p.lng)} mi · ${p.address.split(',')[0]}${p.brand?' · '+p.brand:''}</div>
+        <span class="scard-badge badge-avail">
+          <span style="width:5px;height:5px;background:#3cb87a;border-radius:50%;display:inline-block;"></span>
+          Available · ${p.time}
+        </span>
+      </div>
+      <button class="unsave-btn" onclick="event.stopPropagation();quickSave(${p.id})">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>`).join('');
+  items.forEach(p=>{
+    const cc=document.getElementById('sc'+p.id);if(!cc)return;
+    const c=cc.getContext('2d');c.fillStyle=CAT_BG[p.cat];c.fillRect(0,0,72,72);
+    drawCatIcon(c,p.cat,36,36,48,CAT_COL[p.cat]);
+  });
+}
+
+/* ── PROFILE ── */
+const histData=[
+  {id:9,action:'Viewed',when:'Today'},
+  {id:14,action:'Claimed',when:'Yesterday'},
+  {id:3,action:'Viewed',when:'2 days ago'},
+  {id:17,action:'Claimed',when:'Last week'},
+];
+const myListData=[
+  {name:'Blue Accent Chair',cat:'furniture',when:'Posted 3 days ago',status:'live'},
+  {name:'Marble Side Table',cat:'furniture',when:'Posted 1 week ago',status:'taken'},
+  {name:'Standing Desk Lamp',cat:'lighting',when:'Posted 2 weeks ago',status:'taken'},
+];
+
+function renderProfile(){
+  document.getElementById('profSaved').textContent=savedIds.size;
+  const hl=document.getElementById('histList');
+  hl.innerHTML=histData.map(h=>{
+    const p=listings.find(x=>x.id===h.id);if(!p)return'';
+    return`<div class="hist-item">
+      <div class="hist-ico" style="background:${CAT_BG[p.cat]};">
+        <canvas id="hc${p.id}" width="44" height="44"></canvas>
+      </div>
+      <div>
+        <div class="hist-name">${p.name}</div>
+        <div class="hist-meta">${h.action} · ${h.when}</div>
+      </div>
+    </div>`;
+  }).join('');
+  histData.forEach(h=>{
+    const p=listings.find(x=>x.id===h.id);if(!p)return;
+    const cc=document.getElementById('hc'+p.id);if(!cc)return;
+    const c=cc.getContext('2d');c.fillStyle=CAT_BG[p.cat];c.fillRect(0,0,44,44);
+    drawCatIcon(c,p.cat,22,22,30,CAT_COL[p.cat]);
+  });
+  const ml=document.getElementById('myListings');
+  ml.innerHTML=myListData.map((m,i)=>`
+    <div class="ml-item">
+      <div class="ml-ico" style="background:${CAT_BG[m.cat]};">
+        <canvas id="mlc${i}" width="48" height="48"></canvas>
+      </div>
+      <div>
+        <div class="ml-name">${m.name}</div>
+        <div class="ml-meta">${m.when}</div>
+      </div>
+      <span class="ml-badge ${m.status==='live'?'ml-live':'ml-taken'}">${m.status==='live'?'Live':'Taken'}</span>
+    </div>`).join('');
+  myListData.forEach((m,i)=>{
+    const cc=document.getElementById('mlc'+i);if(!cc)return;
+    const c=cc.getContext('2d');c.fillStyle=CAT_BG[m.cat];c.fillRect(0,0,48,48);
+    drawCatIcon(c,m.cat,24,24,34,CAT_COL[m.cat]);
+  });
+}
+
+/* ── NAVIGATION ── */
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>{
+    const on=n.dataset.s===id;
+    n.classList.toggle('on',on);
+    n.querySelector('.nl').style.color=on?'#5b6cde':'';
+    n.querySelectorAll('path,rect,circle').forEach(el=>el.setAttribute('stroke',on?'#5b6cde':'#c0c4df'));
+  });
+  if(id==='sMap'&&leafMap){updateMapCount();}
+  if(id==='sBrowse')renderBrowse();
+  if(id==='sSaved')renderSaved();
+  if(id==='sProf'){renderProfile();}
+}
+
+document.querySelectorAll('.ni').forEach(n=>n.addEventListener('click',()=>switchScreen(n.dataset.s)));
+
+/* ── INIT ── */
+renderBrowse();renderSaved();renderProfile();
+
+if(navigator.geolocation){
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      initLeaflet(pos.coords.latitude,pos.coords.longitude);
+      navigator.geolocation.watchPosition(pos2=>{
+        userLat=pos2.coords.latitude;userLng=pos2.coords.longitude;
+        if(userMarker)userMarker.setLatLng([userLat,userLng]);
+        updateMapCount();
+      },{enableHighAccuracy:true,maximumAge:5000});
+    },
+    err=>{
+      console.warn('Location error:',err.message);
+      initLeaflet(UNION_SQ[0],UNION_SQ[1]);
+      const b=document.getElementById('locBanner');
+      if(b){
+        b.textContent='Showing Union Square — allow location for your real position';
+        b.style.background='rgba(232,96,44,0.92)';
+        b.style.opacity='1';
+        setTimeout(()=>b.style.opacity='0',5000);
+      }
+    },
+    {enableHighAccuracy:true,timeout:9000,maximumAge:0}
+  );
+}else{
+  initLeaflet(UNION_SQ[0],UNION_SQ[1]);
+}
+</script>
+</body>
+</html>
