@@ -6,6 +6,7 @@
 <title>Curby — Free Curbside Finds</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#f0f4ff;}
@@ -393,6 +394,121 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
 .auth-sheet.open{transform:translateY(0);}
 .auth-inner{padding:58px 20px 24px;display:flex;flex-direction:column;height:100%;gap:14px;overflow-y:auto;}
 .auth-inner::-webkit-scrollbar{display:none;}
+
+/* ===== Curby UI refresh (non-map logic) ===== */
+.phone{background:linear-gradient(180deg,#f8f9ff 0%,#fdf7ff 55%,#f8fbff 100%);}
+.bnav{
+  background:rgba(255,255,255,0.68);
+  border-top:1px solid rgba(255,255,255,0.85);
+  box-shadow:0 -8px 28px rgba(97,108,170,0.16);
+}
+.ni{gap:4px;}
+.nav-icon-wrap{
+  width:32px;height:32px;border-radius:12px;
+  background:rgba(255,255,255,0.72);
+  box-shadow:inset 0 0 0 1px rgba(136,162,255,0.16);
+}
+.ni.on .nav-icon-wrap{
+  background:linear-gradient(135deg,rgba(136,162,255,0.25),rgba(255,178,247,0.26));
+  box-shadow:0 6px 12px rgba(136,162,255,0.25), inset 0 0 0 1px rgba(255,255,255,0.8);
+}
+.nl{font-weight:800;letter-spacing:.2px;text-transform:none;}
+
+#sBrowse,#sSaved,#sProf{
+  background:
+    radial-gradient(circle at 90% 10%,rgba(255,178,247,.16),transparent 32%),
+    radial-gradient(circle at 8% 30%,rgba(227,252,135,.16),transparent 34%),
+    linear-gradient(180deg,#f8faff 0%,#f7f5ff 50%,#f8fbff 100%);
+}
+
+.browse-hero,.saved-top,.prof-hero{
+  background:rgba(255,255,255,0.62)!important;
+  border-bottom:1px solid rgba(255,255,255,.8);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.browse-hero-title,.saved-title{color:#28345d;}
+.browse-hero-sub,.saved-sub{color:#7f8cb3;}
+.hero-notif{
+  background:rgba(255,255,255,.75);
+  border:1px solid rgba(136,162,255,.2);
+}
+.hero-notif svg path{stroke:#88A2FF!important;}
+
+.search-big{
+  border:1px solid rgba(136,162,255,.18);
+  box-shadow:0 8px 24px rgba(136,162,255,.12);
+}
+.cat-scroll{background:transparent;border-bottom:none;padding-top:10px;}
+.bcat-ico{
+  border-radius:18px;
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.8)!important;
+}
+
+.sec-head{padding-top:10px;color:#2b3661;}
+.results-grid{gap:14px;}
+.rcard{
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(255,255,255,.85);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 10px 28px rgba(123,137,190,.14);
+}
+.rcard-img{
+  height:148px;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.8),rgba(255,255,255,.35))!important;
+}
+.rcard-img img{
+  object-fit:contain!important;
+  width:88%!important;height:88%!important;margin:auto;
+  filter:drop-shadow(0 8px 14px rgba(20,30,60,.16));
+}
+.rcard-heart{
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 8px 18px rgba(136,162,255,.22);
+}
+.rcard-name{font-size:14px;color:#26335c;}
+.rcard-meta{font-size:11px;color:#8a94b9;font-weight:700;font-family:'Nunito',sans-serif;}
+.rcard-free{
+  margin-top:6px;display:inline-flex;
+  padding:4px 10px;border-radius:999px;
+  background:linear-gradient(135deg,#E3FC87,#dbf5a8);
+  color:#4b6630;font-size:10px;font-weight:800;
+}
+
+.saved-scroll,.prof-scroll,.scroll-area{background:transparent;}
+.scard,.hist-item,.ml-item,.info-card{
+  background:rgba(255,255,255,.74)!important;
+  border:1px solid rgba(255,255,255,.85)!important;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 8px 24px rgba(125,139,192,.12);
+}
+.scard-img,.hist-ico,.ml-ico{
+  background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(240,246,255,.72))!important;
+}
+.scard-img img,.hist-ico img,.ml-ico img{
+  object-fit:contain!important;
+  filter:drop-shadow(0 6px 10px rgba(33,42,74,.16));
+}
+
+.prof-hero{padding-top:52px;}
+.prof-name{font-family:'Baloo 2',cursive;font-size:34px;color:#253A82;line-height:1;}
+.prof-handle{color:#7f8cb3;}
+.pstat{
+  background:rgba(255,255,255,.5);
+}
+.pstat-n{color:#253A82;}
+
+.curby-wordmark{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Baloo 2',cursive;
+  font-weight:800;font-size:30px;line-height:1;
+  letter-spacing:.3px;
+  background:linear-gradient(135deg,#88A2FF 0%,#AB9DFF 45%,#FFB2F7 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 8px 18px rgba(136,162,255,.25);
+}
+.curby-wordmark::before{content:'✦';font-size:16px;opacity:.8;}
 </style>
 </head>
 <body>
@@ -1671,6 +1787,49 @@ function switchScreen(id){
 document.querySelectorAll('.ni').forEach(n=>n.addEventListener('click',()=>switchScreen(n.dataset.s)));
 
 /* ── INIT ── */
+const REAL_LISTING_PHOTOS={
+  1:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=80',
+  2:'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=900&q=80',
+  3:'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80',
+  4:'https://images.unsplash.com/photo-1616627452091-7a1e4f0a5b37?auto=format&fit=crop&w=900&q=80',
+  5:'https://images.unsplash.com/photo-1551298370-9d3d53740c72?auto=format&fit=crop&w=900&q=80',
+  6:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=900&q=80',
+  7:'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=900&q=80',
+  8:'https://images.unsplash.com/photo-1549187774-b4e9b0445b41?auto=format&fit=crop&w=900&q=80',
+  9:'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=80',
+  10:'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80',
+  11:'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=80',
+  12:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80',
+  13:'https://images.unsplash.com/photo-1579656381226-5fc0f0100c3b?auto=format&fit=crop&w=900&q=80',
+  14:'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80',
+  15:'https://images.unsplash.com/photo-1575414003591-ece8d0416c7a?auto=format&fit=crop&w=900&q=80',
+  16:'https://images.unsplash.com/photo-1578898887932-dce23a595ad4?auto=format&fit=crop&w=900&q=80',
+  17:'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=900&q=80',
+  18:'https://images.unsplash.com/photo-1595514535415-dae2e3f90f6f?auto=format&fit=crop&w=900&q=80',
+  19:'https://images.unsplash.com/photo-1632923057156-4c4d8bf2666f?auto=format&fit=crop&w=900&q=80',
+  20:'https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?auto=format&fit=crop&w=900&q=80',
+  21:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80',
+  22:'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=900&q=80',
+  23:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
+  24:'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80',
+  25:'https://images.unsplash.com/photo-1511401139252-f158d3209c17?auto=format&fit=crop&w=900&q=80'
+};
+
+function makeListingPhoto(p,w,h){
+  return REAL_LISTING_PHOTOS[p.id] || `https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=${Math.max(w,600)}&q=80`;
+}
+
+function applyCurbyBranding(){
+  ['logoMap','logoBrowse','logoSaved'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const wrap=document.createElement('div');
+    wrap.className='curby-wordmark';
+    wrap.textContent='Curby';
+    el.replaceWith(wrap);
+  });
+}
+applyCurbyBranding();
 
 // ── Init map instantly, no waiting ──
 initLeaflet(UNION_SQ[0], UNION_SQ[1]);
