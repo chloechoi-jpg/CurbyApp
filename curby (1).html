@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#f0f4ff;}
@@ -201,6 +202,42 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
 #mapLoadingSpinner{width:34px;height:34px;border:3px solid rgba(136,162,255,0.2);
   border-top-color:#88A2FF;border-radius:50%;animation:spin .8s linear infinite;}
 #floatingLogoBar{display:none!important;}
+.pin-story{
+  position:relative;
+  width:56px;height:72px;
+  display:flex;align-items:flex-start;justify-content:center;
+  filter:drop-shadow(0 8px 10px rgba(63,77,122,.28));
+}
+.pin-story.pin-sel{width:66px;height:82px;}
+.pin-bubble{
+  width:56px;height:56px;border-radius:50%;
+  padding:3px;
+  background:linear-gradient(135deg,var(--pin,#88A2FF),#ffffff,#FFB2F7);
+  position:relative;
+}
+.pin-story.pin-sel .pin-bubble{width:66px;height:66px;}
+.pin-glass{
+  width:100%;height:100%;border-radius:50%;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.95);
+  overflow:hidden;position:relative;
+}
+.pin-glass img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.pin-glass::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(165deg,rgba(255,255,255,.42),rgba(255,255,255,0) 46%);
+}
+.pin-tail{
+  position:absolute;left:50%;bottom:2px;transform:translateX(-50%);
+  width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;
+  border-top:16px solid var(--pin,#88A2FF);
+}
+.pin-story.pin-sel .pin-tail{
+  border-left-width:8px;border-right-width:8px;border-top-width:18px;
+}
 
 /* ══════ BROWSE SCREEN ══════ */
 #sBrowse{background:#f8f9ff;}
@@ -509,6 +546,246 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
   text-shadow:0 8px 18px rgba(136,162,255,.25);
 }
 .curby-wordmark::before{content:'✦';font-size:16px;opacity:.8;}
+
+/* ===== Retro pop redesign (non-map) ===== */
+:root{
+  --pop-red:#E53824;
+  --pop-yellow:#F6D84C;
+  --pop-blue:#2E56C4;
+  --pop-cream:#F4EEDF;
+  --ink:#2c1b14;
+}
+
+/* keep map look untouched, rest gets retro-pop */
+#sBrowse,#sSaved,#sProf{
+  background:
+    radial-gradient(circle at 10% 5%,rgba(246,216,76,.38),transparent 30%),
+    radial-gradient(circle at 85% 14%,rgba(46,86,196,.2),transparent 32%),
+    linear-gradient(180deg,#fff8ea 0%,#fff5df 50%,#fff8ea 100%);
+}
+
+#sBrowse .browse-hero,
+#sSaved .saved-top,
+#sProf .prof-hero{
+  background:var(--pop-cream)!important;
+  border-bottom:2px solid rgba(229,56,36,.35);
+  backdrop-filter:none!important;
+}
+
+#sBrowse .browse-hero-title,
+#sSaved .saved-title{
+  font-family:'Chewy',cursive;
+  font-size:34px;
+  letter-spacing:.4px;
+  color:var(--pop-red);
+}
+#sBrowse .browse-hero-sub,#sSaved .saved-sub,#sProf .prof-handle{color:#7d4c34;}
+
+#sBrowse .search-big{
+  border:2px solid rgba(229,56,36,.22);
+  border-radius:18px;
+  box-shadow:none;
+}
+#sBrowse .cat-scroll{padding-top:12px;}
+#sBrowse .bcat-ico{
+  border:2px solid rgba(229,56,36,.26)!important;
+  box-shadow:none;
+}
+
+#sBrowse .bcat[data-bc="all"] .bcat-ico{background:#ffd9cf!important;}
+#sBrowse .bcat[data-bc="furniture"] .bcat-ico{background:#ffe57a!important;}
+#sBrowse .bcat[data-bc="lighting"] .bcat-ico{background:#d8ebff!important;}
+#sBrowse .bcat[data-bc="decor"] .bcat-ico{background:#ffe0ef!important;}
+#sBrowse .bcat[data-bc="appliances"] .bcat-ico{background:#e2ffd9!important;}
+#sBrowse .bcat[data-bc="clothing"] .bcat-ico{background:#ffe8ba!important;}
+#sBrowse .bcat[data-bc="books"] .bcat-ico{background:#dcd3ff!important;}
+
+#sBrowse .sec-head{
+  font-family:'Chewy',cursive;
+  color:var(--pop-red);
+  font-size:30px;
+}
+#sBrowse .rcard{
+  background:#fff9ef!important;
+  border:2px solid rgba(229,56,36,.34)!important;
+  box-shadow:none!important;
+  border-radius:18px;
+}
+#sBrowse .rcard-img{
+  background:linear-gradient(145deg,#ffe9cd,#fff8ec)!important;
+  border-bottom:2px solid rgba(229,56,36,.15);
+}
+#sBrowse .rcard-name{
+  color:var(--ink);
+  font-family:'Baloo 2',cursive;
+  font-size:18px;
+  line-height:1.05;
+}
+#sBrowse .rcard-meta{color:#9d563d;font-weight:800;}
+#sBrowse .rcard-free{
+  background:var(--pop-yellow);
+  color:#5f3c00;
+  border:1px solid rgba(130,75,0,.22);
+}
+
+#sSaved .scard,
+#sProf .hist-item,
+#sProf .ml-item,
+#sProf .info-card{
+  background:#fff9ee!important;
+  border:2px solid rgba(229,56,36,.28)!important;
+  box-shadow:none!important;
+}
+#sSaved .scard-name,#sProf .hist-name,#sProf .ml-name{
+  color:var(--ink);
+  font-family:'Baloo 2',cursive;
+}
+#sProf .prof-name{
+  font-family:'Chewy',cursive;
+  font-size:42px;
+  color:var(--pop-red);
+}
+#sProf .pstat-n{color:var(--pop-blue);}
+
+.bnav{
+  background:#fff7e8;
+  border-top:2px solid rgba(229,56,36,.28);
+  box-shadow:none;
+}
+.ni.on .nav-icon-wrap{
+  background:linear-gradient(135deg,#ffd6cc,#ffe672);
+  box-shadow:none;
+}
+.ni.on .nl{
+  color:var(--pop-red)!important;
+  font-family:'Baloo 2',cursive;
+  font-size:12px;
+}
+
+/* Groovy logo treatment */
+.curby-wordmark{
+  display:inline-flex;align-items:flex-end;gap:2px;
+  font-family:'Chewy',cursive;
+  font-size:43px;
+  line-height:1;
+  text-shadow:none;
+  background:none;color:inherit;
+}
+.curby-wordmark::before{content:none;}
+.curby-wordmark span{
+  display:inline-block;
+  transform-origin:50% 80%;
+  text-shadow:0 2px 0 rgba(0,0,0,.1);
+}
+.curby-wordmark .c1{color:#C65AD5;transform:rotate(-5deg);}
+.curby-wordmark .c2{color:#7A2E00;transform:rotate(1deg);}
+.curby-wordmark .c3{color:#F4D842;transform:rotate(-3deg);}
+.curby-wordmark .c4{color:#E00606;transform:rotate(2deg);}
+.curby-wordmark .c5{color:#2E56C4;transform:rotate(5deg);}
+
+/* Raccoon mascot agent */
+.curby-headline{
+  display:flex;align-items:center;gap:8px;
+}
+.curby-raccoon{
+  width:44px;height:44px;border-radius:50%;
+  object-fit:cover;border:2px solid #2a1f1a;background:#fff4de;
+}
+.curby-agent{
+  position:absolute;right:12px;bottom:112px;z-index:560;
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+}
+.agent-btn{
+  width:54px;height:54px;border-radius:18px;border:2px solid #2a1f1a;
+  background:linear-gradient(145deg,#ffdf72,#ffb36c);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+.agent-btn img{width:34px;height:34px;border-radius:50%;object-fit:cover;}
+.agent-panel{
+  width:230px;padding:12px;border-radius:16px;border:2px solid #2a1f1a;
+  background:#fff6e8;color:#4a2d21;
+  font-size:13px;font-weight:700;line-height:1.35;
+  display:none;
+}
+.agent-panel.open{display:block;}
+.agent-title{
+  font-family:'Chewy',cursive;font-size:20px;color:#E53824;margin-bottom:4px;
+}
+
+/* ===== Polish pass: spacing, hierarchy, print texture ===== */
+#sBrowse::before,#sSaved::before,#sProf::before{
+  content:'';
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(rgba(70,42,22,.08) 0.45px, transparent 0.6px),
+    radial-gradient(rgba(255,255,255,.55) 0.45px, transparent 0.6px);
+  background-size:3px 3px, 5px 5px;
+  background-position:0 0, 1px 1px;
+  opacity:.24;
+}
+#sBrowse > *,#sSaved > *,#sProf > *{position:relative;z-index:1;}
+
+#sBrowse .browse-hero,#sSaved .saved-top,#sProf .prof-hero{
+  padding-left:18px;padding-right:18px;
+}
+#sBrowse .search-wrap{margin-top:4px;}
+#sBrowse .search-big{
+  height:48px;
+  font-size:15px;
+  font-weight:700;
+}
+#sBrowse .cat-scroll{padding-left:18px;padding-right:18px;padding-bottom:8px;}
+#sBrowse .results-grid{padding:0 18px 6px;gap:16px;}
+#sBrowse .rcard-body{padding:12px 12px 14px;}
+#sBrowse .rcard-heart{
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid rgba(229,56,36,.2);
+}
+#sBrowse .rcard-heart svg{transform:scale(1.05);}
+
+#sSaved .saved-scroll,#sProf .prof-scroll{padding-bottom:108px;}
+#sSaved .saved-list,#sProf #histList,#sProf #myListings{padding:0 18px;}
+#sSaved .scard,#sProf .hist-item,#sProf .ml-item{margin-bottom:10px;}
+#sProf .prof-sec{margin-left:18px;margin-right:18px;}
+#sProf .prof-sec-title{
+  color:#8b3c24;
+  font-size:12px;
+  letter-spacing:.6px;
+}
+
+/* unified CTA system */
+#sBrowse .s-clear,
+#sSaved .unsave-btn,
+#sProf .ir-edit{
+  border:2px solid rgba(229,56,36,.22);
+}
+.btn-post,.btn-claim,#sProf .logout-btn{
+  border-radius:14px;
+  border:2px solid rgba(122,46,0,.16);
+  box-shadow:none;
+}
+.btn-post,.btn-claim{
+  background:linear-gradient(135deg,#ffd25e,#ff9a3c);
+  color:#502600;
+}
+#sProf .logout-btn{
+  background:#fff0ea;
+}
+#sProf .logout-btn span{
+  color:#b22e1d;
+  font-family:'Baloo 2',cursive;
+}
+
+/* icon consistency */
+.bnav .nav-icon-wrap svg{width:21px;height:21px;}
+.bnav .nav-icon-wrap path,.bnav .nav-icon-wrap rect,.bnav .nav-icon-wrap circle{
+  stroke-width:1.9!important;
+}
+.bnav .ni .nl{
+  font-weight:800;
+  font-size:11px;
+  letter-spacing:.2px;
+}
 </style>
 </head>
 <body>
@@ -740,6 +1017,16 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
 <!-- Auth Sheet -->
 <div class="auth-sheet" id="authSheet">
   <div class="auth-inner" id="authInner"></div>
+</div>
+
+<div class="curby-agent" id="curbyAgent">
+  <div class="agent-panel" id="agentPanel">
+    <div class="agent-title">Hi, I'm Curby Raccoon!</div>
+    I help you discover free curbside furniture nearby. Tap map pins to preview items, save your favorites, and claim fast before someone else does.
+  </div>
+  <button class="agent-btn" id="agentBtn" aria-label="Open Curby agent">
+    <img src="/Users/chloechoi/.cursor/projects/Users-chloechoi-Downloads/assets/racoon-f5dc41f6-cda4-4b9a-a635-30e1eb8bf5d4.png" alt="Curby raccoon agent"/>
+  </button>
 </div>
 
 <!-- ══ BOTTOM NAV ══ -->
@@ -1421,78 +1708,23 @@ function drawPinCatIcon(c, cat, cx, cy, sz) {
 }
 
 function makePinIcon(p,selected){
-  const sz = selected ? 58 : 48;
-  const cv = document.createElement('canvas');
-  cv.width = sz + 8; cv.height = sz + 22;
-  const c = cv.getContext('2d');
-  const cx = (sz+8)/2, cy = sz/2;
-  const r = sz/2 - 2;
-
-  // Drop shadow
-  c.shadowColor = 'rgba(0,0,0,0.18)';
-  c.shadowBlur = 8;
-  c.shadowOffsetY = 3;
-
-  // Pastel gradient ring (like Snapchat story)
-  const ringGrad = c.createLinearGradient(cx-r-3, cy-r-3, cx+r+3, cy+r+3);
-  const col = CAT_COL[p.cat] || '#88A2FF';
-  ringGrad.addColorStop(0, col);
-  ringGrad.addColorStop(0.5, col+'bb');
-  ringGrad.addColorStop(1, '#ffffff');
-  c.fillStyle = ringGrad;
-  c.strokeStyle = 'transparent';
-  c.lineWidth = 0;
-  c.beginPath(); c.arc(cx, cy, r+3, 0, Math.PI*2); c.fill();
-  c.shadowColor = 'transparent';
-
-  // White inner ring (gap)
-  c.fillStyle = '#ffffff';
-  c.beginPath(); c.arc(cx, cy, r+1, 0, Math.PI*2); c.fill();
-
-  // Clip to circle
-  c.save();
-  c.beginPath(); c.arc(cx, cy, r-1, 0, Math.PI*2); c.clip();
-
-  // Pastel bg based on cat
-  const bg = CAT_BG[p.cat] || 'rgba(136,162,255,0.15)';
-  const bgFill = c.createRadialGradient(cx, cy-r*0.3, 0, cx, cy, r);
-  bgFill.addColorStop(0, '#ffffff');
-  bgFill.addColorStop(1, col + '22');
-  c.fillStyle = bgFill; c.fillRect(0,0,cv.width,cv.height);
-
-  // Keep map pins CORS-safe: don't draw remote images onto canvas.
-  c.font = `${Math.round(sz*0.38)}px serif`;
-  c.textAlign = 'center'; c.textBaseline = 'middle';
-  const emojis = {furniture:'🛋',lighting:'💡',decor:'🌿',appliances:'📦',clothing:'👕',books:'📚'};
-  c.fillText(emojis[p.cat]||'📦', cx, cy);
-
-  c.restore();
-
-  // Glass shine overlay
-  const shine = c.createLinearGradient(cx-r, cy-r, cx-r, cy);
-  shine.addColorStop(0, 'rgba(255,255,255,0.45)');
-  shine.addColorStop(1, 'rgba(255,255,255,0)');
-  c.save(); c.beginPath(); c.arc(cx, cy, r-1, 0, Math.PI*2); c.clip();
-  c.fillStyle = shine; c.fillRect(0,0,cv.width,cv.height);
-  c.restore();
-
-  // Saved dot
-  if(savedIds.has(p.id)){
-    c.fillStyle='#FFB2F7'; c.strokeStyle='#fff'; c.lineWidth=2;
-    c.beginPath(); c.arc(cx+r-3, cy-r+3, 6, 0, Math.PI*2); c.fill(); c.stroke();
-  }
-
-  // Tail/pointer
-  c.fillStyle = col;
-  c.beginPath();
-  c.moveTo(cx-5, sz-4); c.lineTo(cx, sz+14); c.lineTo(cx+5, sz-4);
-  c.fill();
-
-  return L.icon({
-    iconUrl: cv.toDataURL(),
-    iconSize: [sz+8, sz+22],
-    iconAnchor: [(sz+8)/2, sz+18],
-    popupAnchor: [0, -(sz+18)]
+  const pinColor = CAT_COL[p.cat] || '#88A2FF';
+  const photo = makeListingPhoto(p,160,160);
+  const html = `
+    <div class="pin-story ${selected?'pin-sel':''}" style="--pin:${pinColor}">
+      <div class="pin-bubble">
+        <div class="pin-glass">
+          <img src="${photo}" alt="${p.name.replace(/"/g,'&quot;')}"/>
+        </div>
+      </div>
+      <div class="pin-tail"></div>
+    </div>`;
+  return L.divIcon({
+    className:'',
+    html,
+    iconSize:selected?[66,82]:[56,72],
+    iconAnchor:selected?[33,74]:[28,65],
+    popupAnchor:[0,-58]
   });
 }
 
@@ -1505,7 +1737,7 @@ function _loadPinImage(p) {
   img.crossOrigin = 'anonymous';
   img.onload = () => { _pinImageCache[p.id] = img; if(typeof refreshPins==='function') refreshPins(); };
   img.onerror = () => { _pinImageCache[p.id] = null; };
-  img.src = LISTING_PHOTOS[p.id];
+  img.src = makeListingPhoto(p,160,160);
 }
 // Preload all pin images on startup
 setTimeout(()=>{ listings.forEach(p=>{ if(LISTING_PHOTOS[p.id]) _loadPinImage(p); }); }, 500);
@@ -1588,7 +1820,9 @@ function openCard(p){
   document.getElementById('cCat').textContent=CAT_LABEL[p.cat];
   document.getElementById('cCond').textContent=p.cond+' condition';
   document.getElementById('cTime').textContent=p.time;
-  document.getElementById('cardPhoto').src=makeListingPhoto(p,358,185);
+  const cardPhoto=document.getElementById('cardPhoto');
+  cardPhoto.style.display='block';
+  cardPhoto.src=makeListingPhoto(p,358,185);
   refreshHeart();
   document.getElementById('cardSheet').classList.add('open');
   refreshPins();
@@ -1782,6 +2016,10 @@ function switchScreen(id){
   if(id==='sBrowse')renderBrowse();
   if(id==='sSaved')renderSaved();
   if(id==='sProf'){renderProfile();}
+  if(agentWrap){
+    agentWrap.style.display = id==='sMap' ? 'none' : 'flex';
+    if(id==='sMap' && agentPanel) agentPanel.classList.remove('open');
+  }
 }
 
 document.querySelectorAll('.ni').forEach(n=>n.addEventListener('click',()=>switchScreen(n.dataset.s)));
@@ -1820,16 +2058,34 @@ function makeListingPhoto(p,w,h){
 }
 
 function applyCurbyBranding(){
-  ['logoMap','logoBrowse','logoSaved'].forEach(id=>{
+  ['logoBrowse','logoSaved'].forEach(id=>{
     const el=document.getElementById(id);
     if(!el)return;
+    const head = document.createElement('div');
+    head.className = 'curby-headline';
     const wrap=document.createElement('div');
     wrap.className='curby-wordmark';
-    wrap.textContent='Curby';
-    el.replaceWith(wrap);
+    wrap.innerHTML = `
+      <span class="c1">C</span><span class="c2">U</span><span class="c3">R</span><span class="c4">B</span><span class="c5">Y</span>
+    `;
+    const rac = document.createElement('img');
+    rac.className='curby-raccoon';
+    rac.alt='Curby raccoon mascot';
+    rac.src='/Users/chloechoi/.cursor/projects/Users-chloechoi-Downloads/assets/racoon-f5dc41f6-cda4-4b9a-a635-30e1eb8bf5d4.png';
+    head.appendChild(wrap);
+    head.appendChild(rac);
+    el.replaceWith(head);
   });
 }
 applyCurbyBranding();
+
+const agentBtn=document.getElementById('agentBtn');
+const agentPanel=document.getElementById('agentPanel');
+const agentWrap=document.getElementById('curbyAgent');
+if(agentBtn&&agentPanel){
+  agentBtn.addEventListener('click',()=>agentPanel.classList.toggle('open'));
+}
+if(agentWrap){ agentWrap.style.display='none'; }
 
 // ── Init map instantly, no waiting ──
 initLeaflet(UNION_SQ[0], UNION_SQ[1]);
