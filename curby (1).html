@@ -175,7 +175,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
 .flbl{font-size:11px;font-weight:800;color:#88A2FF;letter-spacing:.5px;text-transform:uppercase;font-family:'Nunito',sans-serif;}
 .fsel,.finput{border:1.5px solid rgba(136,162,255,0.25);border-radius:14px;padding:12px 14px;
   font-size:13px;color:#253A82;background:rgba(255,255,255,0.8);
-  outline:none;-webkit-appearance:none;width:100%;font-family:'Nunito',sans-serif;font-weight:600;}
+  outline:none;-webkit-appearance:none;appearance:none;width:100%;font-family:'Nunito',sans-serif;font-weight:600;}
 .fsel:focus,.finput:focus{border-color:#88A2FF;box-shadow:0 0 0 3px rgba(136,162,255,0.15);}
 .loc-row{background:linear-gradient(135deg,rgba(136,162,255,0.1),rgba(171,157,255,0.1));
   border-radius:14px;padding:13px 15px;display:flex;align-items:center;
@@ -1344,24 +1344,11 @@ function makePinIcon(p,selected){
   bgFill.addColorStop(1, col + '22');
   c.fillStyle = bgFill; c.fillRect(0,0,cv.width,cv.height);
 
-  // Draw photo if available
-  const photoUrl = LISTING_PHOTOS[p.id];
-  if(photoUrl && _pinImageCache[p.id]) {
-    const img = _pinImageCache[p.id];
-    const iw = img.naturalWidth, ih = img.naturalHeight;
-    const scale = Math.max((r*2)/iw, (r*2)/ih) * 0.85;
-    const dw = iw*scale, dh = ih*scale;
-    c.drawImage(img, cx - dw/2, cy - dh/2, dw, dh);
-  } else if(photoUrl && !_pinImageCache[p.id]) {
-    // Load and cache the image, then redraw
-    _loadPinImage(p);
-  } else {
-    // Fallback: category emoji
-    c.font = `${Math.round(sz*0.38)}px serif`;
-    c.textAlign = 'center'; c.textBaseline = 'middle';
-    const emojis = {furniture:'🛋',lighting:'💡',decor:'🌿',appliances:'📦',clothing:'👕',books:'📚'};
-    c.fillText(emojis[p.cat]||'📦', cx, cy);
-  }
+  // Keep map pins CORS-safe: don't draw remote images onto canvas.
+  c.font = `${Math.round(sz*0.38)}px serif`;
+  c.textAlign = 'center'; c.textBaseline = 'middle';
+  const emojis = {furniture:'🛋',lighting:'💡',decor:'🌿',appliances:'📦',clothing:'👕',books:'📚'};
+  c.fillText(emojis[p.cat]||'📦', cx, cy);
 
   c.restore();
 
@@ -1431,6 +1418,7 @@ function updateMapCount(){
 }
 
 function refreshPins(){
+  if(!leafMap)return;
   pinMarkers.forEach(m=>leafMap.removeLayer(m));pinMarkers=[];
   getFiltered().forEach(p=>{
     const sel=curPin&&curPin.id===p.id;
@@ -1456,8 +1444,12 @@ function initLeaflet(lat,lng){
   }).addTo(leafMap);
   userMarker=L.marker([lat,lng],{icon:makeUserIcon(),zIndexOffset:9999}).addTo(leafMap);
   leafMap.on('moveend zoomend',updateMapCount);
-  refreshPins();
-  updateMapCount();
+  try{
+    refreshPins();
+    updateMapCount();
+  }catch(err){
+    console.error('Pin render failed:', err);
+  }
   setTimeout(()=>leafMap.invalidateSize(),80);
   const loading=document.getElementById('mapLoading');
   if(loading){
