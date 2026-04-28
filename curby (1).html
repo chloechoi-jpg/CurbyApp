@@ -13,7 +13,7 @@
 html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#f0f4ff;}
 
 /* ── PHONE SHELL ── */
-.phone-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:linear-gradient(135deg,#e8eeff 0%,#f5eeff 50%,#ffe8f8 100%);position:relative;}
+.phone-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:linear-gradient(135deg,#ffcccc 0%,#ff9999 50%,#ff6666 100%);position:relative;}
 .phone{width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;
   background:#f8f9ff;
   box-shadow:0 0 0 2px rgba(136,162,255,0.3), 0 30px 80px rgba(136,162,255,0.25), 0 10px 30px rgba(0,0,0,0.12);
@@ -901,7 +901,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
 
   <div class="map-topbar">
     <div class="map-logo-row">
-      <img src="Curby (2).png" alt="Curby" class="curby-logo" id="logoMap" style="height:28px;width:auto;"/>
+      <img src="Curby (2).png" alt="Curby" class="curby-logo" id="logoMap" style="height:60px;width:auto;"/>
       <button class="map-notif-btn">
         <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
           <path d="M10 2a6 6 0 016 6c0 3-1.5 5-3 6H7c-1.5-1-3-3-3-6a6 6 0 016-6z" stroke="#88A2FF" stroke-width="1.8"/>
@@ -1009,7 +1009,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
 <div class="screen" id="sBrowse">
   <div class="browse-hero">
     <div class="hero-top-row">
-      <img src="Curby (2).png" alt="Curby" class="curby-logo" id="logoBrowse" style="height:28px;width:auto;"/>
+      <img src="Curby (2).png" alt="Curby" class="curby-logo" id="logoBrowse" style="height:60px;width:auto;"/>
       <button class="hero-notif">
         <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 016 6c0 3-1.5 5-3 6H7c-1.5-1-3-3-3-6a6 6 0 016-6z" stroke="white" stroke-width="1.8"/><path d="M8.5 16.5a1.5 1.5 0 003 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
@@ -1078,7 +1078,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
 <div class="screen" id="sSaved">
   <div class="saved-top">
     <div class="saved-top-row">
-      <img src="Curby (2).png" alt="Curby" class="curby-logo" id="logoSaved" style="height:24px;width:auto;"/>
+      <img src="Curby (2).png" alt="Curby" class="curby-logo" id="logoSaved" style="height:60px;width:auto;"/>
     </div>
     <div class="saved-title">Saved items 💾</div>
     <div class="saved-sub" id="savedSub">Your bookmarked freebies</div>
@@ -1164,7 +1164,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif
 
 <!-- Floating logo bar (outside phone to escape overflow:hidden) -->
 <div id="floatingLogoBar">
-  <img src="Curby (2).png" alt="Curby" class="curby-logo" id="logoFloat" style="height:28px;width:auto;"/>
+  <img src="Curby (2).png" alt="Curby" class="curby-logo" id="logoFloat" style="height:60px;width:auto;"/>
   <button style="width:36px;height:36px;background:rgba(136,162,255,0.1);border-radius:50%;
     border:1.5px solid rgba(136,162,255,0.25);cursor:pointer;
     display:flex;align-items:center;justify-content:center;">
@@ -2171,7 +2171,7 @@ function applyCurbyBranding(){
     logo.className='curby-logo';
     logo.alt='Curby logo';
     logo.src='Curby (2).png';
-    logo.style.height='42px';
+    logo.style.height='60px';
     logo.style.width='auto';
     btn.appendChild(logo);
     btn.addEventListener('click',()=>switchScreen('sMap'));
