@@ -1254,21 +1254,21 @@ html,body{
 
 /* logo softness */
 .curby-logo-btn .curby-logo{
-  height:52px!important;
+  height:64px!important;
   width:auto!important;
   max-width:none!important;
   filter:drop-shadow(0 8px 18px rgba(232,133,106,.2)) saturate(1.06);
 }
 .curby-logo-float{
   position:absolute!important;
-  left:16px;
-  top:12px;
+  left:18px;
+  top:18px;
   z-index:650!important;
   transform:none!important;
 }
-#sMap .curby-logo-float{top:10px;}
-#sBrowse .curby-logo-float{top:10px;}
-#sSaved .curby-logo-float{top:10px;}
+#sMap .curby-logo-float{top:18px;}
+#sBrowse .curby-logo-float{top:18px;}
+#sSaved .curby-logo-float{top:18px;}
 #sMap .map-logo-row{justify-content:flex-end!important;}
 #sBrowse .hero-top-row{justify-content:flex-end!important;}
 </style>
@@ -2563,8 +2563,8 @@ function applyCurbyBranding(){
         logo.src=fallbackSrc;
       }
     };
-    logo.src='file:///Users/chloechoi/.cursor/projects/Users-chloechoi-Downloads/assets/Curby__2_-ba684e6a-dbd7-4c0d-a768-f9f74de43ad0.png';
-    logo.style.height='52px';
+    logo.src='file:///Users/chloechoi/Downloads/Curby%20%281%29.svg';
+    logo.style.height='64px';
     logo.style.width='auto';
     btn.appendChild(logo);
     btn.addEventListener('click',()=>switchScreen('sMap'));
