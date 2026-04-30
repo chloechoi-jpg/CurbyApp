@@ -988,6 +988,171 @@ html,body{
 .curby-logo-btn .curby-logo{
   filter:contrast(1.03) saturate(1.06);
 }
+
+/* ===== Liminal gradient reskin (final visual override) ===== */
+:root{
+  --lim-bg-1:#eef3ff;
+  --lim-bg-2:#f3eeff;
+  --lim-bg-3:#f8f3e8;
+  --lim-ink:#f8fbff;
+  --lim-text:#3f4f7f;
+  --lim-text-soft:#7f8eb8;
+  --lim-accent:#8fa8ff;
+  --lim-accent-2:#ffc9df;
+  --lim-border:rgba(255,255,255,.65);
+  --lim-shadow:0 10px 30px rgba(129,145,210,.16);
+}
+html,body{
+  background:radial-gradient(circle at 18% 15%,#fff5d6 0%,transparent 26%),
+             radial-gradient(circle at 82% 12%,#dfe9ff 0%,transparent 30%),
+             radial-gradient(circle at 58% 82%,#ffdbe9 0%,transparent 36%),
+             linear-gradient(160deg,var(--lim-bg-1),var(--lim-bg-2) 48%,var(--lim-bg-3));
+}
+.phone-wrap{
+  background:transparent!important;
+}
+.phone{
+  border-radius:42px!important;
+  border:1px solid rgba(255,255,255,.75)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,.3))!important;
+  box-shadow:0 20px 48px rgba(103,121,184,.2)!important;
+}
+.screen{
+  background:transparent!important;
+}
+#sMap,#sBrowse,#sSaved,#sProf{
+  background:
+    radial-gradient(circle at 15% 15%,rgba(255,240,185,.55),transparent 26%),
+    radial-gradient(circle at 82% 18%,rgba(168,201,255,.45),transparent 32%),
+    radial-gradient(circle at 50% 78%,rgba(255,186,214,.36),transparent 33%),
+    linear-gradient(165deg,#edf4ff 0%,#ecefff 38%,#f9f3e5 100%)!important;
+}
+#sBrowse::before,#sSaved::before,#sProf::before{opacity:.12!important;}
+
+/* restore soft cards/surfaces */
+.map-search,.map-notif-btn,.map-btn,.fchip,.bnav,.rcard,.scard,.hist-item,.ml-item,.info-card,.card-inner,.search-big,.hero-notif{
+  backdrop-filter:blur(16px)!important;
+  -webkit-backdrop-filter:blur(16px)!important;
+  box-shadow:var(--lim-shadow)!important;
+}
+.bnav{
+  background:rgba(255,255,255,.56)!important;
+  border-top:1px solid var(--lim-border)!important;
+  border-radius:22px 22px 0 0!important;
+}
+.ni.on .nav-icon-wrap{
+  background:linear-gradient(135deg,rgba(144,168,255,.36),rgba(255,201,223,.34))!important;
+  border:none!important;
+}
+.ni .nl{color:#a3afd1!important;}
+.ni.on .nl{color:#728cf0!important;}
+
+/* map chrome */
+#sMap .map-topbar{
+  background:linear-gradient(to bottom,rgba(245,249,255,.92) 58%,rgba(245,249,255,0))!important;
+  border-bottom:none!important;
+}
+#sMap .map-search{
+  border:1px solid rgba(255,255,255,.82)!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.56)!important;
+}
+#sMap .map-search span{color:#8797c3!important;}
+#sMap .map-search-loc{
+  background:linear-gradient(135deg,#95a8ff,#b7a7ff,#ffc5dd)!important;
+  color:white!important;
+  border:none!important;
+  border-radius:16px!important;
+}
+#sMap .fchip{
+  border:1px solid rgba(255,255,255,.78)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.52)!important;
+  color:#7e92d2!important;
+}
+#sMap .fchip.on{
+  background:linear-gradient(135deg,#8ea4ff,#b3a8ff,#ffc7dd)!important;
+  color:#fff!important;
+  border:none!important;
+}
+#sMap .map-btn{
+  border:1px solid rgba(255,255,255,.8)!important;
+  border-radius:14px!important;
+  color:#7f96df!important;
+  background:rgba(255,255,255,.6)!important;
+}
+#sMap .count-pill{
+  background:linear-gradient(135deg,#6f86df,#7da0ff,#9e9df0)!important;
+  border:1px solid rgba(255,255,255,.65)!important;
+  border-radius:999px!important;
+}
+#sMap .post-fab{
+  background:linear-gradient(135deg,#8ea6ff,#b6a8ff,#ffc8dc)!important;
+  border:none!important;
+}
+#sMap .card-inner{
+  border-radius:28px 28px 0 0!important;
+  border:1px solid rgba(255,255,255,.72)!important;
+  background:rgba(255,255,255,.6)!important;
+}
+#sMap .card-title{
+  font-family:'Baloo 2',cursive!important;
+  text-transform:none!important;
+  font-size:38px!important;
+  color:#2f4377!important;
+}
+#sMap .card-address,#sMap .card-desc{color:#6d7fae!important;}
+#sMap .ctag-free{
+  background:linear-gradient(135deg,#fff8bd,#ffe39a)!important;
+  border:none!important;
+}
+#sMap .ctag-cat,#sMap .ctag-cond{
+  background:rgba(255,255,255,.58)!important;
+  border:1px solid rgba(255,255,255,.75)!important;
+  color:#7088cf!important;
+}
+#sMap .btn-close,#sMap .btn-heart{
+  border:1px solid rgba(255,255,255,.8)!important;
+  border-radius:16px!important;
+  background:rgba(255,255,255,.52)!important;
+}
+#sMap .btn-claim,.btn-post{
+  background:linear-gradient(135deg,#8ea4ff,#b4a8ff,#ffc8dd)!important;
+  color:#fff!important;
+  border:none!important;
+}
+#sMap .pin-bubble{
+  background:linear-gradient(135deg,#a5b6ff,#d8c6ff,#ffd5e5)!important;
+}
+
+/* non-map cards and text */
+#sBrowse .browse-hero,#sSaved .saved-top,#sProf .prof-hero{
+  background:rgba(255,255,255,.45)!important;
+  border-bottom:1px solid rgba(255,255,255,.75)!important;
+}
+#sBrowse .browse-hero-title,#sSaved .saved-title,#sBrowse .sec-head,#sProf .prof-name{
+  font-family:'Baloo 2',cursive!important;
+  text-transform:none!important;
+  color:#6f83c9!important;
+}
+#sBrowse .browse-hero-sub,#sSaved .saved-sub,#sProf .prof-handle{color:#8da0cb!important;}
+#sBrowse .search-big{
+  border:1px solid rgba(255,255,255,.78)!important;
+  border-radius:20px!important;
+  background:rgba(255,255,255,.58)!important;
+}
+#sBrowse .rcard,#sSaved .scard,#sProf .hist-item,#sProf .ml-item,#sProf .info-card{
+  background:rgba(255,255,255,.58)!important;
+  border:1px solid rgba(255,255,255,.8)!important;
+  border-radius:20px!important;
+}
+#sBrowse .rcard-name,#sSaved .scard-name,#sProf .hist-name,#sProf .ml-name{color:#42558b!important;}
+#sBrowse .rcard-meta,#sSaved .scard-meta,#sProf .hist-meta,#sProf .ml-meta{color:#8ca0cc!important;}
+
+/* logo softness */
+.curby-logo-btn .curby-logo{
+  filter:drop-shadow(0 4px 10px rgba(99,116,182,.22));
+}
 </style>
 </head>
 <body>
