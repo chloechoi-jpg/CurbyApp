@@ -1624,6 +1624,127 @@ body{font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-ser
   width:52px!important;height:52px!important;
   border-radius:999px!important;
 }
+
+/* final consistency pass: upload/auth/browse/avatar fallbacks */
+#uploadSheet,#authSheet{
+  background:var(--mk-bg)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+#uploadSheet .upload-inner,#authSheet .auth-inner{
+  background:transparent!important;
+}
+#uploadSheet .up-title,#authSheet .up-title{
+  color:var(--mk-ink)!important;
+  font-weight:900!important;
+  letter-spacing:-.01em!important;
+}
+#uploadSheet .photo-zone{
+  background:var(--mk-surface)!important;
+  border:1.5px dashed var(--mk-line)!important;
+  border-radius:16px!important;
+}
+#uploadSheet .photo-zone p{color:var(--mk-ink-2)!important;font-weight:800!important;}
+#uploadSheet .flbl,#authSheet .flbl{
+  color:var(--mk-ink-2)!important;
+  letter-spacing:.08em!important;
+}
+#uploadSheet .finput,#uploadSheet .fsel,#authSheet .finput{
+  background:var(--mk-surface)!important;
+  border:1.5px solid var(--mk-line)!important;
+  color:var(--mk-ink)!important;
+  border-radius:14px!important;
+  box-shadow:none!important;
+}
+#uploadSheet .loc-row{
+  background:var(--mk-surface)!important;
+  border:1.5px solid var(--mk-line)!important;
+  color:var(--mk-ink-2)!important;
+}
+#uploadSheet .btn-post,#authSheet .btn-post{
+  background:var(--mk-accent)!important;
+  border-radius:14px!important;
+  box-shadow:none!important;
+}
+
+/* browse section consistency */
+#sBrowse .browse-hero{
+  background:var(--mk-bg)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+#sBrowse .search-big,#sBrowse .search-wrap{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+#sBrowse .bcat-ico{
+  background:var(--mk-surface)!important;
+  border:1.5px solid var(--mk-line)!important;
+  box-shadow:none!important;
+}
+#sBrowse .bcat.on .bcat-ico{
+  border-color:var(--mk-accent)!important;
+  background:rgba(214,69,59,0.07)!important;
+}
+#sBrowse .rcard-img{
+  background:var(--mk-surface-2)!important;
+}
+#sBrowse .rcard-heart{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+/* profile images / empty states consistency */
+#sProf .prof-avatar,#sProf .hist-ico,#sProf .ml-ico,.scard-img{
+  background:var(--mk-surface-2)!important;
+  border:1.5px solid var(--mk-line)!important;
+  box-shadow:none!important;
+}
+#sProf .prof-avatar{
+  border-radius:50%!important;
+}
+#sProf .prof-avatar svg{
+  width:44px!important;height:44px!important;
+}
+#sProf .prof-avatar svg circle,#sProf .prof-avatar svg path{
+  stroke:var(--mk-ink-2)!important;
+}
+
+/* unified listing badges/tags consistency */
+#sBrowse .rcard-free,
+#sSaved .scard-badge,
+#sMap .ctag,
+#sMap .ctag-free,
+#sMap .ctag-cat,
+#sMap .ctag-cond{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  border-radius:999px!important;
+  padding:5px 10px!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.02em!important;
+  text-transform:uppercase!important;
+  border:1.5px solid var(--mk-line)!important;
+  background:var(--mk-surface)!important;
+  color:var(--mk-ink-2)!important;
+  box-shadow:none!important;
+}
+
+#sBrowse .rcard-free,
+#sMap .ctag-free{
+  background:rgba(214,69,59,0.10)!important;
+  border-color:rgba(214,69,59,0.30)!important;
+  color:var(--mk-accent)!important;
+}
+
+#sSaved .scard-badge.badge-avail{
+  background:rgba(45,191,122,0.10)!important;
+  border-color:rgba(45,191,122,0.28)!important;
+  color:#198f5a!important;
+}
 </style>
 </head>
 <body>
@@ -3017,7 +3138,7 @@ function openAuth(){
   const authInner=document.getElementById('authInner');
   authInner.innerHTML=`
     <div class="up-title" style="font-size:28px;">Create your Curby profile</div>
-    <div style="color:var(--ed-ink-soft);font-weight:600;margin-bottom:4px;">Join the free curbside pickup community.</div>
+    <div style="color:var(--mk-ink-2);font-weight:600;margin-bottom:4px;">Join the free curbside pickup community.</div>
     <div class="fgrp"><div class="flbl">Full name</div><input class="finput" id="authName" type="text" placeholder="Your name"></div>
     <div class="fgrp"><div class="flbl">Email</div><input class="finput" id="authEmail" type="email" placeholder="you@email.com"></div>
     <div class="fgrp"><div class="flbl">Neighborhood / location</div><input class="finput" id="authLocation" type="text" placeholder="e.g. Brooklyn, NYC"></div>
