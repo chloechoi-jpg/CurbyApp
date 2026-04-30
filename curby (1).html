@@ -1710,6 +1710,34 @@ body{font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-ser
   stroke:var(--mk-ink-2)!important;
 }
 
+/* primary palette for browse category/filter tiles */
+#sBrowse .bcat[data-bc="all"] .bcat-ico,
+#sBrowse .bcat[data-bc="furniture"] .bcat-ico,
+#sBrowse .bcat[data-bc="appliances"] .bcat-ico{
+  background:#d6453b!important;
+  border-color:#d6453b!important;
+}
+#sBrowse .bcat[data-bc="lighting"] .bcat-ico,
+#sBrowse .bcat[data-bc="clothing"] .bcat-ico{
+  background:#f2c230!important;
+  border-color:#f2c230!important;
+}
+#sBrowse .bcat[data-bc="decor"] .bcat-ico,
+#sBrowse .bcat[data-bc="books"] .bcat-ico{
+  background:#2d6ecf!important;
+  border-color:#2d6ecf!important;
+}
+#sBrowse .bcat .bcat-ico [stroke]{stroke:#fff!important;}
+#sBrowse .bcat .bcat-ico [fill]:not([fill="none"]){fill:#fff!important;}
+#sBrowse .bcat .bcat-lbl{
+  color:var(--mk-ink)!important;
+  font-weight:900!important;
+}
+#sBrowse .bcat.on .bcat-ico{
+  box-shadow:0 0 0 2px rgba(42,32,32,0.18)!important;
+  transform:translateY(-1px);
+}
+
 /* unified listing badges/tags consistency */
 #sBrowse .rcard-free,
 #sSaved .scard-badge,
@@ -2041,8 +2069,8 @@ body{font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-ser
 
 
 /* ── DATA ── */
-const CAT_COL={furniture:'#88A2FF',lighting:'#FFB2F7',decor:'#E3FC87',appliances:'#C0E0FF',clothing:'#AB9DFF',books:'#FFD6F5'};
-const CAT_BG={furniture:'rgba(136,162,255,0.15)',lighting:'rgba(255,178,247,0.15)',decor:'rgba(227,252,135,0.15)',appliances:'rgba(192,224,255,0.15)',clothing:'rgba(171,157,255,0.15)',books:'rgba(255,214,245,0.15)'};
+const CAT_COL={furniture:'#d6453b',lighting:'#f2c230',decor:'#2d6ecf',appliances:'#d6453b',clothing:'#f2c230',books:'#2d6ecf'};
+const CAT_BG={furniture:'rgba(214,69,59,0.14)',lighting:'rgba(242,194,48,0.16)',decor:'rgba(45,110,207,0.14)',appliances:'rgba(214,69,59,0.14)',clothing:'rgba(242,194,48,0.16)',books:'rgba(45,110,207,0.14)'};
 const CAT_LABEL={furniture:'Furniture',lighting:'Lighting',decor:'Decor',appliances:'Appliances',clothing:'Clothing',books:'Books'};
 
 /* ── REALISTIC LISTING PHOTOS ── */
@@ -2916,7 +2944,7 @@ function renderSaved(){
     items.length?`${items.length} saved item${items.length>1?'s':''}`:' Your bookmarked freebies';
   if(!items.length){
     list.innerHTML=`<div class="saved-empty">
-      <svg width="56" height="56" viewBox="0 0 22 22" fill="none"><path d="M5 3h12a1 1 0 011 1v14l-7-3.5L4 18V4a1 1 0 011-1z" fill="#88A2FF" stroke="#88A2FF" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <svg width="56" height="56" viewBox="0 0 22 22" fill="none"><path d="M5 3h12a1 1 0 011 1v14l-7-3.5L4 18V4a1 1 0 011-1z" fill="#d6453b" stroke="#d6453b" stroke-width="1.8" stroke-linejoin="round"/></svg>
       <p>No saved items yet.<br>Tap the heart on any listing<br>to bookmark it here.</p>
     </div>`;
     return;
