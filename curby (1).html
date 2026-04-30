@@ -1868,7 +1868,7 @@ body{font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-ser
     </div>
     <div class="map-search">
       <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#a0a8c0" stroke-width="2"/><path d="M13.5 13.5L17 17" stroke="#a0a8c0" stroke-width="2" stroke-linecap="round"/></svg>
-      <span>Search free furniture…</span>
+      <input id="mapSearchInput" type="text" placeholder="Search free furniture..." autocomplete="off" />
       <div class="map-search-loc">NYC</div>
     </div>
     <div class="filter-row" id="mapFilters">
@@ -2054,8 +2054,10 @@ body{font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-ser
 <!-- ══ PROFILE ══ -->
 <div class="screen" id="sProf">
   <div class="prof-hero">
-    <div class="prof-avatar">
+    <div class="prof-avatar" id="profileAvatarWrap" title="Change profile photo">
+      <img id="profileAvatarImg" alt="Profile photo" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
       <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="15" r="7.5" stroke="rgba(255,255,255,0.8)" stroke-width="2.2"/><path d="M6 34c0-6 5.8-10.5 13-10.5S32 28 32 34" stroke="rgba(255,255,255,0.8)" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <input id="profilePhotoInput" type="file" accept="image/*" style="display:none;">
     </div>
     <div class="prof-name">Alex Rivera</div>
     <div class="prof-handle">@alexrivera · Member since 2024</div>
@@ -2628,7 +2630,7 @@ function lighten(hex) {
 const UNION_SQ=[40.7359,-73.9906];
 let userLat=UNION_SQ[0],userLng=UNION_SQ[1];
 let leafMap,userMarker,pinMarkers=[],activeFilter='all',curPin=null,savedIds=new Set();
-let browseFilter='all',searchQ='';
+let browseFilter='all',searchQ='',mapSearchQ='';
 let uploadPhotoData='';
 
 const LS_PROFILE_KEY='curby.profile.v1';
@@ -2639,7 +2641,8 @@ let profile={
   email:'alex@email.com',
   location:'Union Square, NYC',
   notifications:'On - 1 mi radius',
-  memberSince:'2024'
+  memberSince:'2024',
+  photo:''
 };
 
 const listings=[
@@ -2834,7 +2837,17 @@ function makeUserIcon(){
 
 /* ── MAP ── */
 function getFiltered(){
-  return activeFilter==='all'?listings:listings.filter(p=>p.cat===activeFilter);
+  let pool=activeFilter==='all'?listings:listings.filter(p=>p.cat===activeFilter);
+  const q=mapSearchQ.trim().toLowerCase();
+  if(!q) return pool;
+  return pool.filter(p=>
+    p.name.toLowerCase().includes(q) ||
+    (p.brand&&p.brand.toLowerCase().includes(q)) ||
+    p.cat.toLowerCase().includes(q) ||
+    p.address.toLowerCase().includes(q) ||
+    (p.desc&&p.desc.toLowerCase().includes(q)) ||
+    (p.cond&&p.cond.toLowerCase().includes(q))
+  );
 }
 
 function updateMapCount(){
@@ -2926,12 +2939,14 @@ document.getElementById('closeCard').onclick=()=>{
 
 /* ── BROWSE ── */
 function renderBrowse(){
-  const q=searchQ.toLowerCase();
+  const q=searchQ.trim().toLowerCase();
   let pool=browseFilter==='all'?listings:listings.filter(p=>p.cat===browseFilter);
   if(q)pool=pool.filter(p=>
     p.name.toLowerCase().includes(q)||
     (p.brand&&p.brand.toLowerCase().includes(q))||
-    p.cat.includes(q)||p.address.toLowerCase().includes(q)
+    p.cat.includes(q)||p.address.toLowerCase().includes(q)||
+    (p.desc&&p.desc.toLowerCase().includes(q))||
+    (p.cond&&p.cond.toLowerCase().includes(q))
   );
   const heading=q?`Results for "${searchQ}"`:
     browseFilter==='all'?'Trending near you':CAT_LABEL[browseFilter]+' near you';
@@ -3057,6 +3072,19 @@ function renderProfile(){
     const safeHandle='@'+profile.name.toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,18);
     profHandle.textContent=`${safeHandle} · Member since ${profile.memberSince}`;
   }
+  const profAvatarImg=document.getElementById('profileAvatarImg');
+  const profAvatarSvg=document.querySelector('#profileAvatarWrap svg');
+  if(profAvatarImg&&profAvatarSvg){
+    if(profile.photo){
+      profAvatarImg.src=profile.photo;
+      profAvatarImg.style.display='block';
+      profAvatarSvg.style.display='none';
+    }else{
+      profAvatarImg.removeAttribute('src');
+      profAvatarImg.style.display='none';
+      profAvatarSvg.style.display='block';
+    }
+  }
 
   document.getElementById('profSaved').textContent=savedIds.size;
   const postedCount=listings.filter(l=>l.ownerEmail===profile.email).length;
@@ -3126,6 +3154,31 @@ function editProfileField(field){
 }
 
 window.editProfileField=editProfileField;
+
+const mapSearchInput=document.getElementById('mapSearchInput');
+if(mapSearchInput){
+  mapSearchInput.addEventListener('input',()=>{
+    mapSearchQ=mapSearchInput.value||'';
+    refreshPins();
+  });
+}
+
+const profilePhotoInput=document.getElementById('profilePhotoInput');
+const profileAvatarWrap=document.getElementById('profileAvatarWrap');
+if(profilePhotoInput&&profileAvatarWrap){
+  profileAvatarWrap.addEventListener('click',()=>profilePhotoInput.click());
+  profilePhotoInput.addEventListener('change',e=>{
+    const file=e.target.files&&e.target.files[0];
+    if(!file) return;
+    const reader=new FileReader();
+    reader.onload=()=>{
+      profile.photo=String(reader.result||'');
+      saveProfile();
+      renderProfile();
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 /* ── NAVIGATION ── */
 function switchScreen(id){
@@ -3214,7 +3267,7 @@ function applyCurbyBranding(){
     screen.appendChild(btn);
   });
 }
-applyCurbyBranding();
+// logo removed by request
 
 const agentBtn=document.getElementById('agentBtn');
 const agentWrap=document.getElementById('curbyAgent');
@@ -3250,7 +3303,7 @@ function openAuth(){
       alert('Please fill in name, email, and location.');
       return;
     }
-    profile={name,email,location,notifications:notif,memberSince:String(new Date().getFullYear())};
+    profile={name,email,location,notifications:notif,memberSince:String(new Date().getFullYear()),photo:''};
     saveProfile();
     authSheet.classList.remove('open');
     renderProfile();
@@ -3352,7 +3405,8 @@ try{
       email:storedProfile.email,
       location:storedProfile.location||'NYC',
       notifications:storedProfile.notifications||'On - 1 mi radius',
-      memberSince:storedProfile.memberSince||String(new Date().getFullYear())
+      memberSince:storedProfile.memberSince||String(new Date().getFullYear()),
+      photo:storedProfile.photo||''
     };
   }else{
     openAuth();
@@ -3388,5 +3442,35 @@ if(navigator.geolocation){
   );
 }
 </script>
+<style>
+/* Requested cleanup: remove logos + flatten browse/saved backgrounds */
+#logoMap,#logoBrowse,#logoSaved,.curby-logo,.curby-logo-btn,.curby-logo-float{display:none!important;}
+#sBrowse,#sSaved,#sBrowse .browse-hero,#sSaved .saved-top{
+  background:var(--mk-bg)!important;
+  background-image:none!important;
+}
+#sBrowse .browse-hero::before,#sBrowse .browse-hero::after,#sSaved .saved-top::before{display:none!important;}
+#sMap .map-search{
+  gap:8px!important;
+}
+#sMap #mapSearchInput{
+  flex:1;
+  border:none;
+  outline:none;
+  background:transparent;
+  color:var(--mk-ink);
+  font-weight:700;
+  font-family:'Nunito',sans-serif;
+  font-size:13px;
+}
+#sMap #mapSearchInput::placeholder{
+  color:#a0a8c0;
+  opacity:1;
+}
+#profileAvatarWrap{
+  cursor:pointer;
+  overflow:hidden;
+}
+</style>
 </body>
 </html>
