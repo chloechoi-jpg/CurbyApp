@@ -1259,6 +1259,18 @@ html,body{
   max-width:none!important;
   filter:drop-shadow(0 8px 18px rgba(232,133,106,.2)) saturate(1.06);
 }
+.curby-logo-float{
+  position:absolute!important;
+  left:16px;
+  top:12px;
+  z-index:650!important;
+  transform:none!important;
+}
+#sMap .curby-logo-float{top:10px;}
+#sBrowse .curby-logo-float{top:10px;}
+#sSaved .curby-logo-float{top:10px;}
+#sMap .map-logo-row{justify-content:flex-end!important;}
+#sBrowse .hero-top-row{justify-content:flex-end!important;}
 </style>
 </head>
 <body>
@@ -2531,13 +2543,16 @@ function makeListingPhoto(p,w,h){
 }
 
 function applyCurbyBranding(){
+  const screenByLogoId={logoMap:'sMap',logoBrowse:'sBrowse',logoSaved:'sSaved'};
   ['logoMap','logoBrowse','logoSaved'].forEach(id=>{
     const el=document.getElementById(id);
     if(!el)return;
     const fallbackSrc = el.getAttribute('src') || '';
+    const screen=document.getElementById(screenByLogoId[id]);
+    if(!screen)return;
     const btn=document.createElement('button');
     btn.type='button';
-    btn.className='curby-logo-btn';
+    btn.className='curby-logo-btn curby-logo-float';
     btn.setAttribute('aria-label','Go to map');
     const logo=document.createElement('img');
     logo.className='curby-logo';
@@ -2553,7 +2568,8 @@ function applyCurbyBranding(){
     logo.style.width='auto';
     btn.appendChild(logo);
     btn.addEventListener('click',()=>switchScreen('sMap'));
-    el.replaceWith(btn);
+    el.remove();
+    screen.appendChild(btn);
   });
 }
 applyCurbyBranding();
