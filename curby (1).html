@@ -1773,6 +1773,80 @@ body{font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-ser
   border-color:rgba(45,191,122,0.28)!important;
   color:#198f5a!important;
 }
+
+/* reference-style category/filters: yellow, blue, red, pink */
+#sBrowse .sec-head,
+#sSaved .saved-title,
+#sProf .prof-name{
+  color:#d6453b!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-style:italic!important;
+  font-weight:700!important;
+  letter-spacing:.01em!important;
+}
+
+#sBrowse .cat-scroll{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:10px!important;
+  padding:12px 16px 8px!important;
+  overflow:visible!important;
+}
+#sBrowse .bcat{
+  width:100%!important;
+}
+#sBrowse .bcat{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  border-radius:22px!important;
+  border:1.5px solid rgba(0,0,0,0.06)!important;
+  padding:10px 14px!important;
+}
+#sBrowse .bcat-lbl{
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-style:italic!important;
+  font-size:18px!important;
+  letter-spacing:0!important;
+  color:#d6453b!important;
+  text-transform:none!important;
+}
+#sBrowse .bcat-ico{
+  width:56px!important;height:56px!important;
+  border-radius:18px!important;
+  flex-shrink:0!important;
+}
+
+#sBrowse .bcat[data-bc="all"],
+#sBrowse .bcat[data-bc="lighting"]{background:#f2c230!important;}
+#sBrowse .bcat[data-bc="furniture"],
+#sBrowse .bcat[data-bc="books"]{background:#9eb8ca!important;}
+#sBrowse .bcat[data-bc="decor"],
+#sBrowse .bcat[data-bc="appliances"]{background:#d6453b!important;}
+#sBrowse .bcat[data-bc="clothing"]{background:#e8a9b6!important;}
+
+#sBrowse .bcat[data-bc="decor"] .bcat-lbl,
+#sBrowse .bcat[data-bc="appliances"] .bcat-lbl{color:#fff4ea!important;}
+
+#sBrowse .bcat.on{
+  box-shadow:inset 0 0 0 3px rgba(42,32,32,0.18)!important;
+}
+
+/* map filters use same four-color family */
+#sMap .fchip{
+  color:#d6453b!important;
+  border:1.5px solid rgba(214,69,59,0.20)!important;
+  background:#f8f2e8!important;
+}
+#sMap .fchip[data-f="all"], #sMap .fchip[data-f="lighting"]{background:#f2c230!important;color:#8a2d15!important;}
+#sMap .fchip[data-f="furniture"], #sMap .fchip[data-f="books"]{background:#9eb8ca!important;color:#183e63!important;}
+#sMap .fchip[data-f="decor"], #sMap .fchip[data-f="appliances"]{background:#d6453b!important;color:#fff4ea!important;}
+#sMap .fchip[data-f="clothing"]{background:#e8a9b6!important;color:#8a2d4d!important;}
+#sMap .fchip.on{
+  box-shadow:inset 0 0 0 2px rgba(42,32,32,0.30)!important;
+  border-color:transparent!important;
+}
 </style>
 </head>
 <body>
