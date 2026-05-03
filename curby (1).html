@@ -8,9 +8,9 @@
 <style>
 :root{
   --font-mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-  --terra:#8f4f3c;
+  --terra:#4a433e;
   --brown-muted:#6b6059;
-  --nav-muted:#6e5f6d;
+  --nav-muted:#6a615c;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;min-height:100%;
@@ -550,7 +550,7 @@ html,body{width:100%;min-height:100%;
   -webkit-background-clip:text;background-clip:text;color:transparent;
   text-shadow:0 8px 18px rgba(136,162,255,.25);
 }
-.curby-wordmark::before{content:'✦';font-size:16px;opacity:.8;}
+.curby-wordmark::before{content:none;}
 
 /* ===== Retro pop redesign (non-map) ===== */
 :root{
@@ -1385,9 +1385,9 @@ html,body,.phone-wrap,.phone,.screen,#sMap,#sBrowse,#sSaved,#sProf{
   --mk-ink:#2a2020;
   --mk-ink-2:#6b5a52;
   --mk-line:#ead8c8;
-  --mk-accent:#d6453b;     /* primary red */
-  --mk-accent-2:#f07a3b;   /* warm orange */
-  --mk-green:#2dbf7a;
+  --mk-accent:#3a3835;
+  --mk-accent-2:#5c534d;
+  --mk-green:#6b6560;
 }
 html,body,.phone-wrap,.phone,.screen,#sMap,#sBrowse,#sSaved,#sProf{
   background:var(--mk-bg)!important;
@@ -1406,7 +1406,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
   position:absolute;top:18px;left:0;right:0;z-index:420;
   text-align:center;
   font-size:11px;font-weight:900;letter-spacing:.28em;
-  color:rgba(214,69,59,0.85);
+  color:rgba(74,67,62,0.78);
 }
 #sMap::before{content:"MAP";}
 #sBrowse::before{content:"BROWSE";}
@@ -1493,7 +1493,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
   letter-spacing:-.02em!important;
 }
 .card-address{color:var(--mk-ink-2)!important;}
-.ctag-free{background:rgba(214,69,59,0.10)!important;color:var(--mk-accent)!important;box-shadow:none!important;}
+.ctag-free{background:rgba(74,67,62,0.10)!important;color:var(--mk-accent)!important;box-shadow:none!important;}
 .ctag-cat,.ctag-cond{background:rgba(0,0,0,0.03)!important;color:var(--mk-ink-2)!important;border:1px solid var(--mk-line)!important;}
 .btn-close{
   background:var(--mk-surface)!important;
@@ -1535,7 +1535,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
   border:1.5px solid var(--mk-line)!important;
   background:var(--mk-surface)!important;
 }
-#sBrowse .bcat.on .bcat-ico{border-color:rgba(214,69,59,0.55)!important;}
+#sBrowse .bcat.on .bcat-ico{border-color:rgba(74,67,62,0.55)!important;}
 #sBrowse .sec-head{
   font-size:16px!important;
   text-transform:none!important;
@@ -1551,7 +1551,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
 #sBrowse .rcard-name{color:var(--mk-ink)!important;font-weight:900!important;}
 #sBrowse .rcard-meta{color:var(--mk-ink-2)!important;}
 #sBrowse .rcard-free{
-  background:rgba(214,69,59,0.10)!important;
+  background:rgba(74,67,62,0.10)!important;
   color:var(--mk-accent)!important;
   border-radius:999px!important;
   font-weight:900!important;
@@ -1599,7 +1599,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
 }
 .nl{color:rgba(42,32,32,0.35)!important;}
 .ni.on .nl{color:var(--mk-accent)!important;}
-.ni.on .nav-icon-wrap{background:rgba(214,69,59,0.10)!important;}
+.ni.on .nav-icon-wrap{background:rgba(74,67,62,0.10)!important;}
 
 /* agent "+" button: red circle like mock */
 #curbyAgent{right:16px!important;bottom:116px!important;}
@@ -1670,7 +1670,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
 }
 #sBrowse .bcat.on .bcat-ico{
   border-color:var(--mk-accent)!important;
-  background:rgba(214,69,59,0.07)!important;
+  background:rgba(74,67,62,0.07)!important;
 }
 #sBrowse .rcard-img{
   background:var(--mk-surface-2)!important;
@@ -1731,15 +1731,15 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
 
 #sBrowse .rcard-free,
 #sMap .ctag-free{
-  background:rgba(214,69,59,0.10)!important;
-  border-color:rgba(214,69,59,0.30)!important;
+  background:rgba(74,67,62,0.10)!important;
+  border-color:rgba(74,67,62,0.30)!important;
   color:var(--mk-accent)!important;
 }
 
 #sSaved .scard-badge.badge-avail{
-  background:rgba(45,191,122,0.10)!important;
-  border-color:rgba(45,191,122,0.28)!important;
-  color:#198f5a!important;
+  background:rgba(74,67,62,0.08)!important;
+  border-color:rgba(74,67,62,0.22)!important;
+  color:#4a4540!important;
 }
 
 /* keep layout small + horizontal; only apply new yellow/blue/red/pink scheme */
@@ -1813,7 +1813,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
 <div class="screen active" id="sMap">
 <div class="map-page">
 <aside class="map-editorial map-logo-slot" aria-label="Curby">
-  <img class="map-logo-slot-img" src="./Curby%20(2).svg" width="560" height="200" alt="Curby logo"/>
+  <img class="map-logo-slot-img" id="brandLogoMap" width="560" height="200" alt="" decoding="async" referrerpolicy="no-referrer"/>
 </aside>
 <div class="map-pane">
 <div class="map-stage">
@@ -1879,7 +1879,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
         <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 016 6c0 3-1.5 5-3 6H7c-1.5-1-3-3-3-6a6 6 0 016-6z" stroke="white" stroke-width="1.8"/><path d="M8.5 16.5a1.5 1.5 0 003 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
     </div>
-    <div class="browse-hero-title">Free curbside<br>finds near you 🗽</div>
+    <div class="browse-hero-title">Free curbside<br>finds near you — NYC metro</div>
     <div class="browse-hero-sub">Real furniture. Real people. Real free.</div>
     <div class="search-wrap">
       <svg class="s-ico" width="17" height="17" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#a0a8c0" stroke-width="2"/><path d="M13.5 13.5L17 17" stroke="#a0a8c0" stroke-width="2" stroke-linecap="round"/></svg>
@@ -1933,9 +1933,9 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
 
   <div class="scroll-area">
     <div class="sug-box" id="sugBox"></div>
-    <div class="sec-head" id="browseHeading">Trending near you ✨</div>
+    <div class="sec-head" id="browseHeading">Trending near you</div>
     <div class="results-grid" id="resultsGrid"></div>
-    <div class="no-res" id="noResults" style="display:none;">Nothing found — try a different search! 🔍</div>
+    <div class="no-res" id="noResults" style="display:none;">Nothing found — try a different search</div>
   </div>
 </div>
 
@@ -1965,7 +1965,7 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
       <div class="pstat"><div class="pstat-n">3</div><div class="pstat-l">Posted</div></div>
       <div class="pstat"><div class="pstat-n" id="profSaved">0</div><div class="pstat-l">Saved</div></div>
       <div class="pstat"><div class="pstat-n">7</div><div class="pstat-l">Claimed</div></div>
-      <div class="pstat"><div class="pstat-n">4.9★</div><div class="pstat-l">Rating</div></div>
+      <div class="pstat"><div class="pstat-n">4.9</div><div class="pstat-l">Rating</div></div>
     </div>
   </div>
   <div class="prof-scroll">
@@ -1990,21 +1990,21 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
       <div class="card-body">
         <div class="card-title" id="cName">—</div>
         <div class="card-address">
-          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 1C5.2 1 3 3.2 3 6c0 3.8 5 9 5 9s5-5.2 5-9c0-2.8-2.2-5-5-5z" fill="#88A2FF"/></svg>
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 1C5.2 1 3 3.2 3 6c0 3.8 5 9 5 9s5-5.2 5-9c0-2.8-2.2-5-5-5z" fill="#6b6059"/></svg>
           <span id="cAddr">—</span>
         </div>
         <div class="card-desc" id="cDesc">—</div>
         <div class="card-tags">
-          <span class="ctag ctag-free">FREE ✨</span>
+          <span class="ctag ctag-free">Free pickup</span>
           <span class="ctag ctag-cat" id="cCat">—</span>
           <span class="ctag ctag-cond" id="cCond">—</span>
         </div>
         <div class="card-btns">
           <button class="btn-close" id="closeCard">✕</button>
-          <button class="btn-claim">I want this! 🙌</button>
+          <button class="btn-claim">I want this</button>
           <button class="btn-heart" id="heartBtn" onclick="toggleSave()">
             <svg id="heartIco" width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M10 16.5S3 12 3 7a4 4 0 017-2.6A4 4 0 0117 7c0 5-7 9.5-7 9.5z" stroke="#FFB2F7" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M10 16.5S3 12 3 7a4 4 0 017-2.6A4 4 0 0117 7c0 5-7 9.5-7 9.5z" stroke="#5c534d" stroke-width="2" stroke-linejoin="round"/>
             </svg>
           </button>
         </div>
@@ -2019,11 +2019,11 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
         <button class="back-btn" id="closeUpload">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#88A2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="up-title">Post a free item ✨</div>
+        <div class="up-title">Post a free item</div>
       </div>
       <label class="photo-zone" for="uploadPhotoInput" id="uploadPhotoZone">
         <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="4" y="9" width="30" height="22" rx="6" stroke="#88A2FF" stroke-width="2"/><circle cx="19" cy="20" r="5.5" stroke="#88A2FF" stroke-width="2"/><path d="M15 9l2-3h4l2 3" stroke="#88A2FF" stroke-width="2" stroke-linejoin="round"/></svg>
-        <p id="uploadPhotoLabel">Tap to add a photo 📸</p>
+        <p id="uploadPhotoLabel">Tap to add a photo</p>
       </label>
       <input id="uploadPhotoInput" type="file" accept="image/*" style="display:none;">
       <img id="uploadPhotoPreview" alt="Listing preview" style="display:none;width:100%;height:130px;object-fit:cover;border-radius:12px;border:2px solid var(--ed-line);margin-top:-2px;"/>
@@ -2040,10 +2040,10 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
           <select class="fsel" id="uploadCondition"><option>Excellent</option><option>Good</option><option>Fair</option></select></div>
       </div>
       <div class="fgrp"><div class="flbl">Notes</div>
-        <input class="finput" id="uploadNotes" type="text" placeholder="e.g. Pick up before 8pm 🕗"></div>
+        <input class="finput" id="uploadNotes" type="text" placeholder="e.g. Pick up before 8pm"></div>
       <div class="loc-row">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.7 4.5 8.5 4.5 8.5S12.5 9.7 12.5 6c0-2.5-2-4.5-4.5-4.5z" fill="#88A2FF"/><circle cx="8" cy="6" r="1.5" fill="white"/></svg>
-        Using your current location 📍
+        Using your current location
       </div>
       <button class="btn-post" id="doPost">Post it! ✓</button>
     </div>
@@ -2067,8 +2067,8 @@ body{font-family:var(--font-mono)!important;color:var(--mk-ink)!important;}
 
 
 /* ── DATA ── */
-const CAT_COL={furniture:'#d6453b',lighting:'#f2c230',decor:'#2d6ecf',appliances:'#d6453b',clothing:'#f2c230',books:'#2d6ecf'};
-const CAT_BG={furniture:'rgba(214,69,59,0.14)',lighting:'rgba(242,194,48,0.16)',decor:'rgba(45,110,207,0.14)',appliances:'rgba(214,69,59,0.14)',clothing:'rgba(242,194,48,0.16)',books:'rgba(45,110,207,0.14)'};
+const CAT_COL={furniture:'#8f8680',lighting:'#7a746e',decor:'#6e6862',appliances:'#827b74',clothing:'#767069',books:'#6a6560'};
+const CAT_BG={furniture:'rgba(74,67,62,0.14)',lighting:'rgba(90,84,78,0.14)',decor:'rgba(107,96,89,0.13)',appliances:'rgba(58,56,53,0.15)',clothing:'rgba(90,84,78,0.12)',books:'rgba(124,117,109,0.12)'};
 const CAT_LABEL={furniture:'Furniture',lighting:'Lighting',decor:'Decor',appliances:'Appliances',clothing:'Clothing',books:'Books'};
 
 /* ── REALISTIC LISTING PHOTOS ── */
@@ -2091,12 +2091,12 @@ function makeListingPhoto(p, w, h) {
     15: makeRugPhoto('#8b4a2a','#c87840',w,h),     // persian rug
     16: makePillowPhoto('#4a6a8b','#7a9abc',w,h),  // throw pillows
     17: makeAppliancePhoto('#2a2a2a','#c87a2a',w,h), // air fryer
-    18: makeAppliancePhoto('#c03030','#e8e0d8',w,h), // kitchenaid red
+    18: makeAppliancePhoto('#b8aea4','#3a3835',w,h), // stand mixer tonal
     19: makeAppliancePhoto('#c0c0c0','#e8e8e8',w,h), // box fan
     20: makeAppliancePhoto('#2a2a2a','#e8e8e8',w,h), // microwave
     21: makeCoatPhoto('#1a2a4a','#c0c8d8',w,h),    // winter coats navy
     22: makeSuitPhoto('#2a3a5a','#3a4a6a',w,h),    // suits navy
-    23: makeShoesPhoto('#c03020','#2a2a2a',w,h),   // sneakers
+    23: makeShoesPhoto('#78706a','#2a2a2a',w,h),   // sneakers
     24: makeBookPhoto('#4a6a3a','#c8a840',w,h),    // book box
     25: makeBookPhoto('#2a3a6a','#c04a20',w,h),    // design books
   };
@@ -2802,8 +2802,9 @@ function initLeaflet(lat,lng){
     zoomControl:false,
     attributionControl:true
   });
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © CARTO',
+    subdomains:'abcd',
     maxZoom:19,
     minZoom:10
   }).addTo(leafMap);
@@ -2848,8 +2849,8 @@ function refreshHeart(){
   if(!curPin)return;
   const on=savedIds.has(curPin.id);
   document.getElementById('heartBtn').className='btn-heart'+(on?' saved':'');
-  document.getElementById('heartIco').setAttribute('fill',on?'#ef4444':'none');
-  document.getElementById('heartIco').querySelector('path').setAttribute('stroke',on?'#ef4444':'#5c534d');
+  document.getElementById('heartIco').setAttribute('fill',on?'#3a3835':'none');
+  document.getElementById('heartIco').querySelector('path').setAttribute('stroke',on?'#2a2826':'#5c534d');
 }
 
 function toggleSave(){
@@ -2951,7 +2952,7 @@ function renderSaved(){
     items.length?`${items.length} saved item${items.length>1?'s':''}`:' Your bookmarked freebies';
   if(!items.length){
     list.innerHTML=`<div class="saved-empty">
-      <svg width="56" height="56" viewBox="0 0 22 22" fill="none"><path d="M5 3h12a1 1 0 011 1v14l-7-3.5L4 18V4a1 1 0 011-1z" fill="#d6453b" stroke="#d6453b" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <svg width="56" height="56" viewBox="0 0 22 22" fill="none"><path d="M5 3h12a1 1 0 011 1v14l-7-3.5L4 18V4a1 1 0 011-1z" fill="none" stroke="#4a433e" stroke-width="1.8" stroke-linejoin="round"/></svg>
       <p>No saved items yet.<br>Tap the heart on any listing<br>to bookmark it here.</p>
     </div>`;
     return;
@@ -2965,12 +2966,12 @@ function renderSaved(){
         <div class="scard-name">${p.name}</div>
         <div class="scard-meta">${haversine(userLat,userLng,p.lat,p.lng)} mi · ${p.address.split(',')[0]}${p.brand?' · '+p.brand:''}</div>
         <span class="scard-badge badge-avail">
-          <span style="width:5px;height:5px;background:#3cb87a;border-radius:50%;display:inline-block;"></span>
+          <span style="width:5px;height:5px;background:#514c47;border-radius:50%;display:inline-block;"></span>
           Available · ${p.time}
         </span>
       </div>
       <button class="unsave-btn" onclick="event.stopPropagation();quickSave(${p.id})">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="#5c534d" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
     </div>`).join('');
   /* photos rendered inline */
@@ -3328,7 +3329,7 @@ function resetUploadForm(){
   document.getElementById('uploadCategory').value='Furniture';
   document.getElementById('uploadCondition').value='Excellent';
   document.getElementById('uploadNotes').value='';
-  document.getElementById('uploadPhotoLabel').textContent='Tap to add a photo 📸';
+  document.getElementById('uploadPhotoLabel').textContent='Tap to add a photo';
   const preview=document.getElementById('uploadPhotoPreview');
   preview.style.display='none';
   preview.src='';
@@ -3443,6 +3444,23 @@ try{
 }
 try{ updateAuthChip(); }catch(e){}
 
+(function initBrandLogoMap(){
+  const img=document.getElementById('brandLogoMap');
+  if(!img) return;
+  const list=[];
+  const add=h=>{ if(h && !list.includes(h)) list.push(h); };
+  try{ add(new URL('curby-logo.svg', window.location.href).href); }catch(_){}
+  try{ add(new URL('Curby (2).svg', window.location.href).href); }catch(_){}
+  ['./curby-logo.svg','curby-logo.svg','./Curby%20(2).svg','Curby%20(2).svg',
+   'file:///Users/chloechoi/Downloads/curby-logo.svg','file:///Users/chloechoi/Downloads/Curby%20(2).svg'].forEach(add);
+  let i=0;
+  img.onerror=function(){
+    i++;
+    if(i<list.length){ img.src=list[i]; img.removeAttribute('srcset'); }
+  };
+  img.src=list[0]||list[1]||list[2]||'';
+})();
+
 initLeaflet(UNION_SQ[0], UNION_SQ[1]);
 renderBrowse();
 renderSaved();
@@ -3523,7 +3541,7 @@ if(navigator.geolocation){
   --ink-soft:#5a524e;
   --brown-muted:#6b6059;
   --nav-muted:#6e5f6d;
-  --terra:#8f4f3c;
+  --terra:#4a433e;
   --line:rgba(28,22,20,.14);
   --mk-bg:var(--cream);
   --mk-ink:var(--ink);
@@ -3560,7 +3578,7 @@ html{height:auto;min-height:100%;overflow:auto;}
 }
 .site-nav .ni.on{border-color:rgba(42,34,31,.42)!important;background:rgba(255,255,255,.22)!important;}
 .site-nav .ni:not(.on) .nl{color:#5c534d!important;}
-.site-nav .ni.on .nl{color:#6b3d32!important;font-weight:600;}
+.site-nav .ni.on .nl{color:#3a3835!important;font-weight:600;}
 .site-nav .nl{font-family:inherit;font-size:11px;font-weight:500;letter-spacing:.12em;}
 .site-ghost-btn,.site-ghost-mini{
   font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
@@ -3649,6 +3667,7 @@ html{height:auto;min-height:100%;overflow:auto;}
 .count-pill,.post-fab{bottom:18px!important;}
 .count-pill{background:var(--ink);color:var(--cream);border-radius:0;font-family:var(--font-mono);font-size:11px;}
 #sMap .count-pill{background:var(--ink)!important;border:1px solid var(--line)!important;box-shadow:none!important;}
+#sMap .cpulse{background:#b8aea4!important;}
 .post-fab{
   width:48px;height:48px;border-radius:0;background:var(--cream);color:var(--ink);
   border:1px solid var(--ink);box-shadow:none;
@@ -3717,8 +3736,14 @@ html{height:auto;min-height:100%;overflow:auto;}
 
 #sBrowse{padding-top:8px;}
 .browse-hero{background:transparent!important;padding:28px 0 8px!important;}
-.browse-hero-title{font-family:var(--font-mono)!important;font-size:clamp(2rem,3.5vw,2.8rem)!important;font-weight:700!important;color:var(--ink)!important;line-height:1.08!important;letter-spacing:.02em!important;}
-.browse-hero-sub{color:var(--brown-muted)!important;font-size:13px!important;margin-top:10px!important;}
+.browse-hero-title{font-family:var(--font-mono)!important;font-size:clamp(2rem,3.5vw,2.8rem)!important;font-weight:700!important;color:var(--ink)!important;line-height:1.08!important;letter-spacing:.02em!important;text-transform:none!important;}
+.browse-hero-sub{
+  font-family:var(--font-mono)!important;
+  font-weight:500!important;
+  font-style:normal!important;
+  letter-spacing:.04em!important;
+  color:var(--brown-muted)!important;font-size:13px!important;margin-top:10px!important;
+}
 .search-wrap{background:#fff;border:1px solid var(--line)!important;border-radius:0!important;box-shadow:none!important;}
 .search-big{font-family:var(--font-mono)!important;color:var(--ink)!important;}
 .scroll-area{padding:0 0 48px;}
@@ -3751,13 +3776,15 @@ html{height:auto;min-height:100%;overflow:auto;}
 .work-name{font-family:var(--font-mono);font-size:16px;font-weight:700;letter-spacing:.02em;}
 .work-line{font-size:11px;margin-top:4px;color:var(--brown-muted);}
 .work-tag{margin-top:10px;font-size:10px;letter-spacing:.08em;}
-.sec-head{font-family:var(--font-mono)!important;font-size:20px!important;font-weight:700!important;color:var(--ink)!important;letter-spacing:.04em!important;}
+.sec-head{font-family:var(--font-mono)!important;font-size:20px!important;font-weight:700!important;color:var(--ink)!important;letter-spacing:.04em!important;text-transform:none!important;}
 
 #sSaved .saved-top,#sProf .prof-hero{background:transparent!important;}
-.saved-title{font-family:var(--font-mono)!important;color:var(--ink)!important;font-weight:700!important;}
+.saved-title{font-family:var(--font-mono)!important;color:var(--ink)!important;font-weight:700!important;text-transform:none!important;}
 
-#sProf .prof-name{font-family:var(--font-mono)!important;font-weight:700!important;}
-#sProf .prof-handle{font-family:var(--font-mono)!important;font-size:11px!important;}
+#sProf .prof-name{
+  font-family:var(--font-mono)!important;font-weight:700!important;text-transform:none!important;color:var(--ink)!important;
+}
+#sProf .prof-handle{font-family:var(--font-mono)!important;font-size:11px!important;color:var(--ink-soft)!important;}
 #sProf .prof-hero svg circle,#sProf .prof-hero svg path{stroke:rgba(13,13,13,.7)!important;}
 
 html,body,#sMap,#sBrowse,#sSaved,#sProf{height:auto!important;min-height:100%!important;overflow:visible!important;}
@@ -3783,7 +3810,7 @@ body{overflow-y:auto!important;}
   transform:none!important;
 }
 #sBrowse .bcat-lbl{color:var(--nav-muted)!important;font-weight:600!important;}
-#sBrowse .bcat.on .bcat-lbl{color:#6b3d32!important;font-weight:700!important;}
+#sBrowse .bcat.on .bcat-lbl{color:#3a3835!important;font-weight:700!important;}
 #sBrowse .bcat .bcat-ico [stroke]{stroke:currentColor!important;}
 #sBrowse .bcat .bcat-ico [fill]:not([fill="none"]){fill:currentColor!important;}
 
@@ -3803,6 +3830,77 @@ body{overflow-y:auto!important;}
 }
 #sMap .map-notif-btn path{stroke:#3d3633!important;}
 #sMap .map-search svg circle,#sMap .map-search svg path{stroke:#958b88!important;}
+
+/* Map tiles: soften remaining primaries (Carto Light + desaturation) */
+#sMap #leafletMap .leaflet-tile-pane{
+  filter:saturate(0.12) contrast(1.06) brightness(1.05)!important;
+}
+
+/* Global type: SF Mono stack on form controls */
+button,input,textarea,select,optgroup{font-family:var(--font-mono)!important;}
+
+/* Listing sheet: black / cream / cool brown only */
+#cardSheet .card-title{font-family:var(--font-mono)!important;color:var(--ink)!important;}
+#cardSheet .card-address{font-family:var(--font-mono)!important;color:var(--brown-muted)!important;}
+#cardSheet .card-address svg path{fill:#6b6059!important;}
+#cardSheet .card-desc{font-family:var(--font-mono)!important;color:#5a544e!important;}
+#cardSheet .ctag-free{background:rgba(237,234,227,.95)!important;color:var(--ink)!important;border:1px solid var(--line)!important;box-shadow:none!important;}
+#cardSheet .ctag-cat,#cardSheet .ctag-cond{background:rgba(255,255,255,.72)!important;color:#4a4540!important;border:1px solid var(--line)!important;}
+#cardSheet .btn-claim{
+  background:#2a2826!important;color:var(--cream)!important;border:1px solid #141210!important;
+  font-family:var(--font-mono)!important;font-weight:700!important;letter-spacing:.05em!important;
+  box-shadow:none!important;
+}
+#cardSheet .btn-close,#cardSheet .btn-heart{
+  background:rgba(255,255,255,.9)!important;border:1px solid var(--line)!important;color:var(--ink)!important;
+}
+#cardSheet .btn-heart.saved{background:rgba(58,56,54,.08)!important;border-color:rgba(74,63,59,.35)!important;}
+#cardSheet .avail-tag,#cardSheet .time-tag{background:rgba(255,255,255,.9)!important;color:var(--ink)!important;border:1px solid var(--line)!important;}
+#cardSheet .avail-dot{background:#514c47!important;}
+
+/* Saved empty + misc copy */
+.saved-empty svg path{stroke:#4a433e!important;}
+.saved-empty p,.no-res{color:#5a544e!important;}
+#sSaved .saved-sub{color:var(--brown-muted)!important;}
+
+/* Profile hero: neutral cream gradient (replace blue washes) */
+#sProf .prof-hero{background:linear-gradient(180deg,#eeeae3,#e6e2da)!important;}
+#sProf .pstat-n,#sProf .pstat-l{color:var(--ink)!important;opacity:.9;}
+.logout-btn span{color:#4a4540!important;}
+
+/* Listing badges on browse grids */
+
+#sBrowse .rcard-free,#sMap .ctag-free{
+  background:rgba(237,234,227,.88)!important;
+  border:1px solid var(--line)!important;
+  color:#3a3835!important;
+}
+.scard-badge.badge-avail{background:rgba(237,234,227,.92)!important;color:#3a3835!important;border:1px solid var(--line)!important;}
+
+/* Logo slot — no phantom frame around broken asset */
+.map-editorial.map-logo-slot{border:none!important;outline:none!important;}
+.map-logo-slot-img{background:transparent!important;}
+
+#sProf .ml-live{color:#4a4540!important;background:rgba(237,234,227,.6)!important;border:1px solid var(--line)!important;}
+
+#uploadSheet .btn-post{background:#2a2826!important;color:var(--cream)!important;border:1px solid #141210!important;box-shadow:none!important;font-family:var(--font-mono)!important;}
+
+.ni.on .nl{color:#3a3835!important;}
+#curbyAgent .agent-btn{background:#3a3835!important;color:var(--cream)!important;border:1px solid #1a1816!important;}
+
+/* Map pins + overlays: neutralize legacy peach/lavender gradients site-wide */
+#sMap .pin-bubble,.pin-story .pin-bubble{
+  background:linear-gradient(155deg,#e6e4de,#dbd7cf,#f4f2ec)!important;
+  box-shadow:0 10px 28px rgba(28,22,20,.095)!important;
+}
+#mapLoadingSpinner{
+  border:3px solid rgba(138,129,118,.35)!important;
+  border-top-color:#2a2826!important;
+}
+.curby-wordmark::before,.curby-wordmark::after{content:none!important;}
+
+/* Undo legacy brutalist full-bleed red on body/html (editorial chrome) */
+html,body{background:var(--cream)!important;color:var(--ink)!important;}
 </style>
 </body>
 </html>
