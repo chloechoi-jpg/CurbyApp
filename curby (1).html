@@ -2304,7 +2304,7 @@ html body #sDetail.active,
           <path d="M4 6h12M4 10h12M4 14h12" stroke="#2a2020" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
-      <span class="map-panel-title mono">NYC MAP</span>
+      <span class="map-panel-title mono">Plate 01 · Locale</span>
       <button type="button" class="map-notif-btn" aria-label="Alerts">
         <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
           <path d="M10 2a6 6 0 016 6c0 3-1.5 5-3 6H7c-1.5-1-3-3-3-6a6 6 0 016-6z" stroke="#5c534d" stroke-width="1.8"/>
@@ -2409,7 +2409,7 @@ html body #sDetail.active,
 
   <div class="scroll-area">
     <div class="sug-box" id="sugBox"></div>
-    <div class="sec-head" id="browseHeading"></div>
+    <div class="sec-head" id="browseHeading">Trending near you</div>
     <div class="results-grid" id="resultsGrid"></div>
     <div class="no-res" id="noResults" style="display:none;">Nothing found — try a different search</div>
   </div>
@@ -3537,7 +3537,8 @@ function renderBrowse(){
     (p.desc&&p.desc.toLowerCase().includes(q))||
     (p.cond&&p.cond.toLowerCase().includes(q))
   );
-  const heading=q?`Results for "${searchQ}"`:'');
+  const heading=q?`Results for "${searchQ}"`:
+    browseFilter==='all'?'Trending near you':CAT_LABEL[browseFilter]+' near you';
   document.getElementById('browseHeading').textContent=heading;
   const grid=document.getElementById('resultsGrid');
   const no=document.getElementById('noResults');
